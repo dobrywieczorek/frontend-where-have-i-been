@@ -1,17 +1,5 @@
 import '../css/Sidebar.css';
 import { useState } from 'react';
-/*
-const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer {XO7luuB2o9uqqvuo9Po7IMzhpx8KH7ryksFyTZkTc15c3bbd}' },
-    body: JSON.stringify({ name: "kasia", email:'kasia@email.com', password:"Password123"})
-};
-fetch('http://localhost:8000/api/whoami', requestOptions)
-    .then(response => response.json())
-    .then(data => console.log(data));
-*/
-
-
 
 function Sidebar(){
     const [isActive, setActive] = useState(false)
