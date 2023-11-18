@@ -16,9 +16,11 @@ const Root = () => {
   return (
     <>
       <div>
+        {/*
         <Link to="/">Home</Link>
         <Link to="/test">Test</Link>
-
+  */}
+        <Sidebar />
         <div>
           <Outlet />
         </div>
@@ -40,7 +42,7 @@ function App() {
   return (
     <div className="App">
       
-      <Sidebar />
+      
       <RouterProvider router={router}/>
       {/*
       <UserProfile />
