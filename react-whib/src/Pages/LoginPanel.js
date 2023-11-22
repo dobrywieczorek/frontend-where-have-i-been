@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function LoginPanel() {
   	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
-	async function login(event) {
+	const navigate = useNavigate();
+
+	async function Login(event) {
 		event.preventDefault();
 
 		if (!email.includes("@")) {
 			setError("błąd - niepoprawny adres e-mail!");
-			return ;
-		}
-
-		if (password.length < 8) {
-			setError("błąd - hasło musi mieć przynajmniej 8 znaków");
 			return ;
 		}
 
@@ -39,6 +36,8 @@ export default function LoginPanel() {
 				console.log("Zalogowany, typ tokenu: ", json.token_type);
 				localStorage.setItem("access_token", json.access_token);
 				localStorage.setItem("token_type", json.token_type);
+				
+				navigate("/home");
 			} else if(json.errors === "Invalid login details") {
 				setError("Niepoprawny adres email lub hasło");
 			}
@@ -58,7 +57,7 @@ export default function LoginPanel() {
 					</h3>
 					
 					<p className="mb-10">Zaloguj się do swojego konta:</p>
-					<form className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/3 flex flex-col items-center" onSubmit={login}>
+					<form className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/3 flex flex-col items-center" onSubmit={Login}>
 						<div className="mb-3 w-4/6">
 							<label htmlFor="email" className="block text-gray-700">Adres e-mail</label>
 							<input
@@ -84,8 +83,8 @@ export default function LoginPanel() {
 							Zaloguj
 						</button>
 					</form>
-					<p className="mt-3">Nie pamiętasz hasła? <Link className="text-blue-400 hover:text-blue-700" href="/">Zresetuj hasło</Link></p>
-					<p className="mt-3">Nie masz jeszcze konta? <Link className="text-blue-400 hover:text-blue-700" href="/">Zarejestruj się</Link></p>
+					<p className="mt-3">Nie pamiętasz hasła? <Link className="text-blue-400 hover:text-blue-700" to="/">Zresetuj hasło</Link></p>
+					<p className="mt-3">Nie masz jeszcze konta? <Link className="text-blue-400 hover:text-blue-700" to="/">Zarejestruj się</Link></p>
 				</div>
 			</div>
 		</>
