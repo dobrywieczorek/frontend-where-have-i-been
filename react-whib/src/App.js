@@ -16,7 +16,7 @@ import Error404 from './components/Error404';
 const Root = () => {
   return (
     <>
-      <div className='root-outlet'>
+      <div className='Root-outlet'>
         <Sidebar />
         <Outlet />
       </div>
