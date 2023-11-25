@@ -2,11 +2,9 @@
     position:fixed;
     display: flex;
     flex-direction: column;
-}
-.hamburger-icon{
-    width: 40px;
-    height: 40px;
-    padding: 5px;
+    background-color: #eee;
+    height: 100%;
+    overflow: hidden;
 }
 
 /* Icon 3 */
@@ -14,8 +12,8 @@
 #nav-icon3{
     width: 60px;
     height: 45px;
-    position: relative;
-    margin: 50px auto;
+    position: fixed;
+    margin: 10px;
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
     -o-transform: rotate(0deg);
@@ -32,7 +30,7 @@
     position: absolute;
     height: 9px;
     width: 100%;
-    background: #d3531a;
+    background: #000;
     border-radius: 9px;
     opacity: 1;
     left: 0;
@@ -85,3 +83,30 @@
     left: 50%;
   }
   
+  .Sidebar {
+    width: 0;
+    transition: 300ms;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 6px 0px 12px rgba(0,0,0,0.25);
+  }
+  .Sidebar.open{
+    width:10rem;
+    transition: 300ms;
+  }
+
+  #sidebar-menu{
+    margin-top: 100px;
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+  }
+  .navlink>img {
+    width:3.5rem;
+    height: 3.5rem;
+  }

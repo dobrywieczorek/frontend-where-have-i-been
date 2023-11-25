@@ -11,6 +11,7 @@ import {
   Outlet,
   RouterProvider
 } from 'react-router-dom'
+import Error404 from './components/Error404';
 
 const Root = () => {
   return (
@@ -32,8 +33,10 @@ const Root = () => {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />}>
+      
       <Route index path='/profile' element={<UserProfile />}/>
       <Route path='/test' element={<Test />} />
+      <Route path='*' element={<Error404 />}></Route>
     </Route>
   )
 )
