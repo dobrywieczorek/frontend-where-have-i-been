@@ -6,6 +6,7 @@
     height: 100vh;
     overflow: hidden;
     width: 0;
+    max-width: 8rem;
     transition: 300ms;
     overflow: hidden;
     background-color: #fff;
@@ -19,7 +20,7 @@
 
 /* Icon 3 */
 
-#nav-icon3{
+#hamburger{
     width: 60px;
     height: 45px;
     position: fixed;
@@ -35,7 +36,7 @@
     cursor: pointer;
   }
   
-  #nav-icon3 span{
+  #hamburger span{
     display: block;
     position: absolute;
     height: 9px;
@@ -55,39 +56,39 @@
   }
   
 
-#nav-icon3 span:nth-child(1) {
+#hamburger span:nth-child(1) {
     top: 0px;
   }
   
-  #nav-icon3 span:nth-child(2),#nav-icon3 span:nth-child(3) {
+  #hamburger span:nth-child(2),#hamburger span:nth-child(3) {
     top: 18px;
   }
   
-  #nav-icon3 span:nth-child(4) {
+  #hamburger span:nth-child(4) {
     top: 36px;
   }
   
-  #nav-icon3.open span:nth-child(1) {
+  #hamburger.open span:nth-child(1) {
     top: 18px;
     width: 0%;
     left: 50%;
   }
   
-  #nav-icon3.open span:nth-child(2) {
+  #hamburger.open span:nth-child(2) {
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
     -o-transform: rotate(45deg);
     transform: rotate(45deg);
   }
   
-  #nav-icon3.open span:nth-child(3) {
+  #hamburger.open span:nth-child(3) {
     -webkit-transform: rotate(-45deg);
     -moz-transform: rotate(-45deg);
     -o-transform: rotate(-45deg);
     transform: rotate(-45deg);
   }
   
-  #nav-icon3.open span:nth-child(4) {
+  #hamburger.open span:nth-child(4) {
     top: 18px;
     width: 0%;
     left: 50%;
@@ -118,7 +119,14 @@
   }
   .Sidebar a.active {
     background-color: #6e44ff;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
   }
   .Sidebar img{
     user-select: none;
+  }
+  @media (min-width: 1000px){
+    #hamburger{
+      display: none;
+    }
   }

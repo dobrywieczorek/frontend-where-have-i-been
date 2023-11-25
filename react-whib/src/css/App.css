@@ -2,9 +2,7 @@
     .Root-outlet{
         display: flex;
     }
-    .Root-outlet>*{
-        
-    }
+
     .Root-outlet>.Sidebar{
         position: relative;
         width: 10%;

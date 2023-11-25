@@ -14,7 +14,7 @@ function Sidebar(){
 
     return(
         <div className={`Sidebar ${isActive ? 'open' : ''} `}>
-            <div id="nav-icon3" className={isActive ? 'open' : null} onClick={toggleOpen}>
+            <div id="hamburger" className={isActive ? 'open' : null} onClick={toggleOpen}>
                 <span></span>
                 <span></span>
                 <span></span>
