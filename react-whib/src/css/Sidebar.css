@@ -5,6 +5,16 @@
     background-color: #eee;
     height: 100%;
     overflow: hidden;
+    width: 0;
+    transition: 300ms;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 6px 0px 12px rgba(0,0,0,0.25);
+}
+
+.Sidebar.open{
+  width:10rem;
+  transition: 300ms;
 }
 
 /* Icon 3 */
@@ -82,18 +92,6 @@
     width: 0%;
     left: 50%;
   }
-  
-  .Sidebar {
-    width: 0;
-    transition: 300ms;
-    overflow: hidden;
-    background-color: #fff;
-    box-shadow: 6px 0px 12px rgba(0,0,0,0.25);
-  }
-  .Sidebar.open{
-    width:10rem;
-    transition: 300ms;
-  }
 
   #sidebar-menu{
     margin-top: 100px;
@@ -106,7 +104,21 @@
     justify-content: space-around;
     height: 100%;
   }
-  .navlink>img {
+
+  a>img {
     width:3.5rem;
     height: 3.5rem;
+  }
+
+  .Sidebar a{
+    display: inline-block;
+    width:100%;
+    display: flex;
+    justify-content: center;
+  }
+  .Sidebar a.active {
+    background-color: #6e44ff;
+  }
+  .Sidebar img{
+    user-select: none;
   }

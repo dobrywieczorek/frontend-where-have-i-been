@@ -21,11 +21,11 @@ function Sidebar(){
                 <span></span>
             </div>
             <div>
-            <ul id='sidebar-menu' className={isActive ? 'menu-open' : null}>
-                <div><NavLink className='navlink' title='Home' to="/"><img src={homeIcon} /></NavLink></div>
-                <div><NavLink className='navlink' title='Map' to="/map"><img src={mapIcon} /></NavLink></div>
-                <div><NavLink className='navlink' title='Profile' to="/profile"><img src={profileIcon} /></NavLink></div>
-            </ul>         
+            <div id='sidebar-menu' className={isActive ? 'menu-open' : null}>
+                <NavLink className='navlink' title='Home' to="/"><img src={homeIcon} /></NavLink>
+                <NavLink className='navlink' title='Map' to="/map"><img src={mapIcon} /></NavLink>
+                <NavLink className='navlink' title='Profile' to="/profile"><img src={profileIcon} /></NavLink>
+            </div>         
             </div>   
         </div>
     )
