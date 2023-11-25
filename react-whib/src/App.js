@@ -16,15 +16,9 @@ import Error404 from './components/Error404';
 const Root = () => {
   return (
     <>
-      <div>
-        {/*
-        <Link to="/">Home</Link>
-        <Link to="/test">Test</Link>
-  */}
+      <div className='root-outlet'>
         <Sidebar />
-        <div>
-          <Outlet />
-        </div>
+        <Outlet />
       </div>
     </>
   )
