@@ -6,6 +6,7 @@ export default function RegisterPanel() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -88,20 +89,27 @@ export default function RegisterPanel() {
                                 onChange={e => setEmail(e.target.value)}
                             />
                         </div>
-                        <div className="mb-3 w-4/6">
+                        <div className="mb-3 w-4/6 relative">
                             <label htmlFor="password" className="block text-gray-700">Hasło</label>
                             <input
-                                type="password"
+                                type={showPassword ? 'text' : 'password'}
                                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                                 id="password"
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
                             />
+                            <button
+                                type="button"
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? 'Ukryj' : 'Pokaż'}
+                            </button>
                         </div>
                         <div className="mb-3 w-4/6">
                             <label htmlFor="confirmPassword" className="block text-gray-700">Potwierdź hasło</label>
                             <input
-                                type="password"
+                                type={showPassword ? 'text' : 'password'}
                                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                                 id="confirmPassword"
                                 value={confirmPassword}
