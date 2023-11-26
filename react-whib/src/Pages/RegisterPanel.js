@@ -28,6 +28,11 @@ export default function RegisterPanel() {
             return;
         }
 
+        if (password !== confirmPassword) {
+            setError("Hasła nie są identyczne!");
+            return;
+        }
+
         if (!validatePasswordStrength(password)) {
             setError('Hasło powinno zawierać co najmniej 8 znaków, w tym wielkie i małe litery, cyfry i znaki specjalne.');
             return;
