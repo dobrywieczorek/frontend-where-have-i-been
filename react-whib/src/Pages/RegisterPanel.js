@@ -1,3 +1,5 @@
+import hidePasswordImage from '../img/hide_password.svg'
+import showPasswordImage from '../img/show_password.svg'
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -108,10 +110,14 @@ export default function RegisterPanel() {
                                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
                                 onClick={() => setShowPassword(!showPassword)}
                             >
-                                {showPassword ? 'Ukryj' : 'Pokaż'}
+                                <img
+                                    src={showPassword ? hidePasswordImage : showPasswordImage}
+                                    alt={showPassword ? 'Ukryj hasło' : 'Pokaż hasło'}
+                                    style={{ width: '25px', height: '25px', marginTop: 23}}
+                                />
                             </button>
                         </div>
-                        <div className="mb-3 w-4/6">
+                        <div className="mb-3 w-4/6 ">
                             <label htmlFor="confirmPassword" className="block text-gray-700">Potwierdź hasło</label>
                             <input
                                 type={showPassword ? 'text' : 'password'}
