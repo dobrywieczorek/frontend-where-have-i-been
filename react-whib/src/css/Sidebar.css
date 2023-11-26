@@ -1,0 +1,132 @@
+.Sidebar{
+    position:fixed;
+    display: flex;
+    flex-direction: column;
+    background-color: #eee;
+    height: 100vh;
+    overflow: hidden;
+    width: 0;
+    max-width: 8rem;
+    transition: 300ms;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 6px 0px 12px rgba(0,0,0,0.25);
+}
+
+.Sidebar.open{
+  width:10rem;
+  transition: 300ms;
+}
+
+/* Icon 3 */
+
+#hamburger{
+    width: 60px;
+    height: 45px;
+    position: fixed;
+    margin: 10px;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: .5s ease-in-out;
+    -moz-transition: .5s ease-in-out;
+    -o-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
+    cursor: pointer;
+  }
+  
+  #hamburger span{
+    display: block;
+    position: absolute;
+    height: 9px;
+    width: 100%;
+    background: #000;
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: .25s ease-in-out;
+    -moz-transition: .25s ease-in-out;
+    -o-transition: .25s ease-in-out;
+    transition: .25s ease-in-out;
+  }
+  
+
+#hamburger span:nth-child(1) {
+    top: 0px;
+  }
+  
+  #hamburger span:nth-child(2),#hamburger span:nth-child(3) {
+    top: 18px;
+  }
+  
+  #hamburger span:nth-child(4) {
+    top: 36px;
+  }
+  
+  #hamburger.open span:nth-child(1) {
+    top: 18px;
+    width: 0%;
+    left: 50%;
+  }
+  
+  #hamburger.open span:nth-child(2) {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  
+  #hamburger.open span:nth-child(3) {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+  
+  #hamburger.open span:nth-child(4) {
+    top: 18px;
+    width: 0%;
+    left: 50%;
+  }
+
+  #sidebar-menu{
+    margin-top: 100px;
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+  }
+
+  a>img {
+    width:3.5rem;
+    height: 3.5rem;
+  }
+
+  .Sidebar a{
+    display: inline-block;
+    width:100%;
+    display: flex;
+    justify-content: center;
+  }
+  .Sidebar a.active {
+    background-color: #6e44ff;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
+  .Sidebar img{
+    user-select: none;
+  }
+  @media (min-width: 1000px){
+    #hamburger{
+      display: none;
+    }
+  }
