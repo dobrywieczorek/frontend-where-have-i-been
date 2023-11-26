@@ -33,6 +33,32 @@ export default function RegisterPanel() {
         }
         setError('');
 
+        const body = { name, email, password };
+
+        try {
+            let res = await fetch("http://localhost:8000/api/register", {
+                method: "post",
+                body: JSON.stringify(body),
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
+                }
+            });
+            let text = await res.text();
+            let json = JSON.parse(text);
+            console.log('JSON', json);
+
+            if (json.success) {
+                console.log("Użytkownik zarejestrowany!");
+                navigate("/login");
+            } else if (json.errors) {
+                setError(json.errors);
+            }
+
+        } catch (err) {
+            console.log(err);
+            setError("Błąd serwera, spróbuj ponownie później");
+        }
+
     }
 
     return (
@@ -43,7 +69,7 @@ export default function RegisterPanel() {
                     <p className="mb-10">Zarejestruj nowe konto:</p>
                     <form className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/3 flex flex-col items-center" onSubmit={Register}>
                         <div className="mb-3 w-4/6">
-                            <label htmlFor="name" className="block text-gray-700">Imię</label>
+                            <label htmlFor="name" className="block text-gray-700">Nazwa konta</label>
                             <input
                                 type="text"
                                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
