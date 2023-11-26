@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Register.css';
-
 const RegisterPanel = () => {
     //const history = useHistory();
   
@@ -21,8 +20,6 @@ const RegisterPanel = () => {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
-
-
   /*
       try {
         const { ...dataToSend } = formData; // Exclude confirmPassword from data to send
@@ -44,7 +41,6 @@ const RegisterPanel = () => {
         console.error('Error during registration:', error);
       } */
     }; 
-
     return (
         <div>
           <h2>Register</h2>
