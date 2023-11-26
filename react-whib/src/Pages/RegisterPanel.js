@@ -9,19 +9,29 @@ export default function RegisterPanel() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    function validateEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    function validatePasswordStrength(password) {
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return regex.test(password);
+    }
+
     async function Register(event) {
         event.preventDefault();
 
-        if (!email.includes("@")) {
-            setError("Błąd - niepoprawny adres e-mail!");
+        if (!validateEmail(email)) {
+            setError('Nieprawidłowy adres e-mail!');
             return;
         }
 
-        if (password !== confirmPassword) {
-            setError("Hasła nie są identyczne!");
+        if (!validatePasswordStrength(password)) {
+            setError('Hasło powinno zawierać co najmniej 8 znaków, w tym wielkie i małe litery, cyfry i znaki specjalne.');
             return;
         }
-
+        setError('');
 
     }
 
