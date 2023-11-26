@@ -1,84 +1,59 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './Register.css';
-const RegisterPanel = () => {
-    //const history = useHistory();
-  
-    const [formData, setFormData] = useState({
-      username: '',
-      email: '',
-      password: '',
-    });
-  
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    };
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-  /*
-      try {
-        const { ...dataToSend } = formData; // Exclude confirmPassword from data to send
-  
-        const response = await fetch('http://localhost:8000/api/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(dataToSend) // Send only necessary data to the backend
-        });
-  
-        if (response.ok) {
-          //history.push('/login');
-        } else {
-          console.error('Registration failed');
-        }
-      } catch (error) {
-        console.error('Error during registration:', error);
-      } */
-    }; 
-    return (
-        <div>
-          <h2>Register</h2>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="username">Username:</label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-              />
+import { Link, useNavigate } from 'react-router-dom';
+
+export default function RegisterPanel() {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+
+return (
+    <>
+        <div className="mx-auto h-screen grid content-center">
+            <div className="flex flex-col items-center pb-28">
+                <h3 className="text-2xl font-bold mb-2">Rejestracja</h3>
+                <p className="mb-10">Zarejestruj nowe konto:</p>
+                <form className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/3 flex flex-col items-center" onSubmit={Register}>
+                    <div className="mb-3 w-4/6">
+                        <label htmlFor="name" className="block text-gray-700">Imię</label>
+                        <input
+                            type="text"
+                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                            id="name"
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                        />
+                    </div>
+                    <div className="mb-3 w-4/6">
+                        <label htmlFor="email" className="block text-gray-700">Adres e-mail</label>
+                        <input
+                            type="email"
+                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                            id="email"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <div className="mb-3 w-4/6">
+                        <label htmlFor="password" className="block text-gray-700">Hasło</label>
+                        <input
+                            type="password"
+                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                            id="password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                        />
+                    </div>
+                    <p className="text-red-500 mb-3" id="error">{error}</p>
+                    <button type="submit" className="w-4/6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Zarejestruj
+                    </button>
+                </form>
+                <p className="mt-3">Masz już konto? <Link className="text-blue-400 hover:text-blue-700" to="/login">Zaloguj się</Link></p>
             </div>
-            <div>
-              <label htmlFor="email">Email:</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="password">Password:</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-              />
-            </div>
-            <button type="submit">Register</button>
-          </form>
         </div>
-      );
-    };
-    
-    export default RegisterPanel;
+    </>
+)
+}
