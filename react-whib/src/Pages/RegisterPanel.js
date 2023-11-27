@@ -55,7 +55,7 @@ export default function RegisterPanel() {
             let json = JSON.parse(text);
             console.log('JSON', json);
 
-            if (json.success) {
+            if (json.access_token) {
                 console.log("Użytkownik zarejestrowany!");
                 navigate("/login");
             } else if (json.errors) {
