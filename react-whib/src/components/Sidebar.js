@@ -6,6 +6,9 @@ import mapIcon from '../img/map-128.png';
 import profileIcon from '../img/profile-128.png';
 
 function Sidebar(){
+    var access_token = localStorage.getItem('access_token');
+    console.log('dupa'+ access_token);
+
     const [isActive, setActive] = useState(false)
 
     function toggleOpen(){
@@ -24,7 +27,10 @@ function Sidebar(){
             <div id='sidebar-menu' className={isActive ? 'menu-open' : null}>
                 <NavLink className='navlink' title='Home' to="/"><img src={homeIcon} /></NavLink>
                 <NavLink className='navlink' title='Map' to="/map"><img src={mapIcon} /></NavLink>
-                <NavLink className='navlink' title='Profile' to="/profile"><img src={profileIcon} /></NavLink>
+                {access_token ? 
+                    <NavLink className='navlink' title='Profile' to="/profile"><img src={profileIcon} /></NavLink>
+                     : <NavLink className='navlink' title='Log into your account' to="/login">Log in</NavLink>
+                }
             </div>         
             </div>   
         </div>
