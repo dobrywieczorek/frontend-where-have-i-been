@@ -4,7 +4,9 @@ import cog from '../img/cog.svg';
 function UserProfile(){
     const [userData, setUserData] = useState();
     const url = 'http://localhost:8000/api'
-    var token = "5|jTr5DwEywz607T1QSdTfTnVUoUZ8E4Zrf6ZN9plDab15e0ed"
+    
+    var token = localStorage.getItem('access_token');
+
     const requestOptions = {
         method: 'POST',
         headers: {'Authorization':'Bearer ' + token},
