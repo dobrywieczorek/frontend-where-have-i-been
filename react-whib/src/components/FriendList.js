@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { UserContext } from "./AuthContext";
+import { UserContext } from "../contexts/AuthContext";
 
 function FriendList(){
     const [friends, setFriends] = useState(null)

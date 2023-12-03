@@ -16,7 +16,7 @@ import Error404 from './components/Error404';
 import LoginPanel from './Pages/LoginPanel';
 import RegisterPanel from './Pages/RegisterPanel';
 
-import { UserContext } from './components/AuthContext';
+import { UserContext } from './contexts/AuthContext';
 
 
 const Root = () => {
@@ -52,7 +52,7 @@ export default function App() {
   
   return (
     <div className="App">
-      <UserContext.Provider value={token}>
+      <UserContext.Provider value={{token, setToken}}>
         <RouterProvider router={router}/>
       </UserContext.Provider>
     </div>

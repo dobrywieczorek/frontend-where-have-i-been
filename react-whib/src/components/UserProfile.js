@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import '../css/UserProfile.css';
 import cog from '../img/cog.svg';
-import { UserContext } from './AuthContext';
+import { UserContext } from '../contexts/AuthContext';
 
 function UserProfile(){
     const [userData, setUserData] = useState();
     const url = 'http://localhost:8000/api'
 
-    var token = useContext(UserContext);
-    console.log('context ' + useContext(UserContext))
+    //curly braces = destructuring
+    const {token} = useContext(UserContext)
 
     const requestOptions = {
         method: 'POST',
@@ -17,13 +17,14 @@ function UserProfile(){
     
     useEffect(() => {
         if(token != null){
-        const fetchUserData = async () => {
-            const response = await fetch(`${url}/whoami`, requestOptions);
-            const data = await response.json().catch(err => console.error(err));
-            console.log(data);
-            setUserData(data);
-        };
-        fetchUserData();
+            console.log(token);
+            const fetchUserData = async () => {
+                const response = await fetch(`${url}/whoami`, requestOptions);
+                const data = await response.json().catch(err => console.error(err));
+                console.log(data);
+                setUserData(data);
+            };
+            fetchUserData();
     }
     }, [token])
 

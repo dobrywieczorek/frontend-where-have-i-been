@@ -1,19 +1,28 @@
 import '../css/Sidebar.css';
 import { useContext, useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import homeIcon from '../img/home-128.png';
 import mapIcon from '../img/map-128.png';
 import profileIcon from '../img/profile-128.png';
-import { UserContext } from './AuthContext';
+import { UserContext } from '../contexts/AuthContext';
 
 function Sidebar(){
-    //var access_token = localStorage.getItem('access_token');
-    var access_token = useContext(UserContext);
-
+    const {token, setToken} = useContext(UserContext)
     const [isActive, setActive] = useState(false)
+    const navigate = useNavigate()
 
     function toggleOpen(){
         setActive(!isActive)
+    }
+
+    useEffect(()=>{
+
+    }, [token])
+
+    function logout(){
+        setToken(null);
+        localStorage.setItem('access_token', null);
+        navigate("/home");
     }
 
     return(
@@ -28,9 +37,12 @@ function Sidebar(){
             <div id='sidebar-menu' className={isActive ? 'menu-open' : null}>
                 <NavLink className='navlink' title='Home' to="/"><img src={homeIcon} /></NavLink>
                 <NavLink className='navlink' title='Map' to="/map"><img src={mapIcon} /></NavLink>
-                {access_token ? 
-                    <NavLink className='navlink' title='Profile' to="/profile"><img src={profileIcon} /></NavLink>
-                     : <NavLink className='navlink' title='Log into your account' to="/login">Log in</NavLink>
+                {token != 'null' ? 
+                <>
+                <NavLink className='navlink' title='Profile' to="/profile"><img src={profileIcon} /></NavLink> 
+                <button onClick={logout}>Logout</button>
+                </>
+                : <NavLink className='navlink' title='Log into your account' to="/login">Log in</NavLink>
                 }
             </div>         
             </div>   
