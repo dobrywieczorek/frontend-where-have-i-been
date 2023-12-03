@@ -15,9 +15,23 @@ export default function UserSearchPanel() {
         }
 
         try {
-            let response = await fetch(`http://localhost:8000/api/getusersbyname?name=${searchQuery}`);
-            console.log(data);
-            let data = await response.json();
+            const response = await fetch(`http://localhost:8000/api/getusersbyname?name=${searchQuery}`);
+            const data = await response.json();
+    
+            if (data && data.users && data.users.success) {
+                const foundUsers = data.users.users;
+    
+                if (foundUsers.length > 0) {
+                    setSearchResults(foundUsers);
+                    setError('');
+                } else {
+                    setSearchResults([]);
+                    setError('Brak wyników dla podanej nazwy użytkownika.');
+                }
+            } else {
+                setSearchResults([]);
+                setError('Wystąpił błąd podczas wyszukiwania użytkowników.');
+            }
         } catch (err) {
             console.error(err);
             setError('Wystąpił błąd podczas wyszukiwania użytkowników.');
@@ -50,8 +64,7 @@ export default function UserSearchPanel() {
                         <h4 className="text-lg font-bold mb-3">Wyniki wyszukiwania:</h4>
                         <ul>
                             {searchResults.map((user) => (
-                                <li key={user.id}>{user.name} - {user.email}</li>
-                                // Tutaj możesz dostosować wyświetlanie informacji o użytkownikach
+                                <li key={user.id}>{user.name} - {user.email}</li> //SEARCHED USERS DATA
                             ))}
                         </ul>
                     </div>
