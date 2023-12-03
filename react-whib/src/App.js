@@ -17,6 +17,7 @@ import LoginPanel from './Pages/LoginPanel';
 import RegisterPanel from './Pages/RegisterPanel';
 
 import { UserContext } from './contexts/AuthContext';
+import PrivateRoutes from './components/PrivateRoutes';
 
 
 const Root = () => {
@@ -33,9 +34,11 @@ const Root = () => {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<Root />}>
-      <Route path='/home' element={<UserProfile />} />
-      <Route path='/' element={<UserProfile />} />
-      <Route path='/profile' element={<UserProfile />}/>
+      <Route element={<PrivateRoutes />}>
+        <Route path='/home' element={<UserProfile />} />
+        <Route path='/' element={<UserProfile />} />
+        <Route path='/profile' element={<UserProfile />}/>
+      </Route>
       <Route path='/test' element={<Test />} />
       <Route path='*' element={<Error404 />}></Route>
       <Route path='/login' element={<LoginPanel />}></Route>
