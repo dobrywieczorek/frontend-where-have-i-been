@@ -32,9 +32,10 @@ const Root = () => {
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Root />}>
-      
-      <Route index path='/profile' element={<UserProfile />}/>
+    <Route element={<Root />}>
+      <Route path='/home' element={<UserProfile />} />
+      <Route path='/' element={<UserProfile />} />
+      <Route path='/profile' element={<UserProfile />}/>
       <Route path='/test' element={<Test />} />
       <Route path='*' element={<Error404 />}></Route>
       <Route path='/login' element={<LoginPanel />}></Route>
