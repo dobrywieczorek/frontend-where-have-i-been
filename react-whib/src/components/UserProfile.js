@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import '../css/UserProfile.css';
 import cog from '../img/cog.svg';
+import { UserContext } from './AuthContext';
+
 function UserProfile(){
     const [userData, setUserData] = useState();
     const url = 'http://localhost:8000/api'
-    
-    var token = localStorage.getItem('access_token');
+
+    var token = useContext(UserContext);
+    console.log('context ' + useContext(UserContext))
 
     const requestOptions = {
         method: 'POST',
@@ -13,14 +16,16 @@ function UserProfile(){
     };
     
     useEffect(() => {
+        if(token != null){
         const fetchUserData = async () => {
             const response = await fetch(`${url}/whoami`, requestOptions);
-            const data = await response.json();
+            const data = await response.json().catch(err => console.error(err));
             console.log(data);
             setUserData(data);
         };
         fetchUserData();
-    }, [])
+    }
+    }, [token])
 
     var currentUserID = 1;
     var userID = 1;

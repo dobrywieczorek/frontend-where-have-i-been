@@ -1,13 +1,14 @@
 import '../css/Sidebar.css';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import homeIcon from '../img/home-128.png';
 import mapIcon from '../img/map-128.png';
 import profileIcon from '../img/profile-128.png';
+import { UserContext } from './AuthContext';
 
 function Sidebar(){
-    var access_token = localStorage.getItem('access_token');
-    console.log('dupa'+ access_token);
+    //var access_token = localStorage.getItem('access_token');
+    var access_token = useContext(UserContext);
 
     const [isActive, setActive] = useState(false)
 

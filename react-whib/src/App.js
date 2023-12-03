@@ -3,6 +3,7 @@ import './components/UserProfile';
 import UserProfile from './components/UserProfile';
 import Sidebar from './components/Sidebar';
 import Test from './components/Test';
+import { useEffect, useState } from 'react';
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -14,6 +15,9 @@ import {
 import Error404 from './components/Error404';
 import LoginPanel from './Pages/LoginPanel';
 import RegisterPanel from './Pages/RegisterPanel';
+
+import { UserContext } from './components/AuthContext';
+
 
 const Root = () => {
   return (
@@ -40,14 +44,17 @@ const router = createBrowserRouter(
 )
 
 export default function App() {
+  const [token, setToken] = useState(null)
+
+  useEffect(()=>{
+    setToken(localStorage.getItem('access_token'))
+  }, [token])
+  
   return (
     <div className="App">
-      
-      
-      <RouterProvider router={router}/>
-      {/*
-      <UserProfile />
-      */}
+      <UserContext.Provider value={token}>
+        <RouterProvider router={router}/>
+      </UserContext.Provider>
     </div>
   );
 }
