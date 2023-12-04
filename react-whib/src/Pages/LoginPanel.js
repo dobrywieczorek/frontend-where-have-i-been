@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { UserContext } from '../contexts/AuthContext';
 
 export default function LoginPanel() {
@@ -55,7 +55,7 @@ export default function LoginPanel() {
 	}
 
 	return (
-		<>
+		token != null && token != 'null' ? <Navigate to="/" /> :
 			<div className="mx-auto h-screen grid content-center">
 				<div className="flex flex-col items-center pb-28">
 					<h3 className="text-2xl font-bold mb-2">
@@ -93,6 +93,5 @@ export default function LoginPanel() {
 					<p className="mt-3">Nie masz jeszcze konta? <Link className="text-blue-400 hover:text-blue-700" to="/">Zarejestruj się</Link></p>
 				</div>
 			</div>
-		</>
 	)
 }
