@@ -38,6 +38,7 @@ const router = createBrowserRouter(
         <Route path='/home' element={<UserProfile />} />
         <Route path='/' element={<UserProfile />} />
         <Route path='/profile' element={<UserProfile />}/>
+        <Route path='/profile/:profileId' element={<UserProfile />}/>
       </Route>
       <Route path='/test' element={<Test />} />
       <Route path='*' element={<Error404 />}></Route>
@@ -49,14 +50,16 @@ const router = createBrowserRouter(
 
 export default function App() {
   const [token, setToken] = useState(null)
+  const [isLoading, setLoading] = useState(true)
 
   useEffect(()=>{
     setToken(localStorage.getItem('access_token'))
+    setLoading(false)
   }, [token])
   
   return (
     <div className="App">
-      <UserContext.Provider value={{token, setToken}}>
+      <UserContext.Provider value={{token, setToken, isLoading}}>
         <RouterProvider router={router}/>
       </UserContext.Provider>
     </div>

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import '../css/UserProfile.css';
 import cog from '../img/cog.svg';
 import { UserContext } from '../contexts/AuthContext';
+import { useParams } from 'react-router-dom';
 
 function UserProfile(){
     const [userData, setUserData] = useState();
@@ -9,6 +10,9 @@ function UserProfile(){
 
     //curly braces = destructuring
     const {token} = useContext(UserContext)
+
+    let params = useParams()
+    console.log(params)
 
     const requestOptions = {
         method: 'POST',
