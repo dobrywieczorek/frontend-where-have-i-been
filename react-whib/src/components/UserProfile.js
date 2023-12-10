@@ -22,62 +22,59 @@ function UserProfile(){
     
     useEffect(() => {
         if(token != null){
-            //console.log(token);
-
             async function fetchMyData() {
-                const response = await fetch(`${url}/whoami`, requestOptions);
-                const data = await response.json().catch(err => console.error(err));
-                if(profileId == data.id){
-                    console.log("ids match")
-                    setIDMatched(true);
-                }
-                console.log(data);
-                setMyData(data);
+                fetch(`${url}/whoami`, 
+                {
+                    method: 'POST',
+                    headers: {'Authorization':'Bearer ' + token},
+                })
+                .then((response)=>{
+                    response.json().then((data)=>{
+                        console.log(data)
+
+                        if(profileId == data.id){
+                            console.log('ids match')
+                            setIDMatched(true);
+                            setUserData(data)
+                        }else{
+                            fetchUserData()
+                        }
+                    })
+                })
             };
 
-            const fetchUserData = async () => {
-                /*const response = await fetch(`${url}/getuserbyid?id=${profileId}`, {method: 'GET'});
-                const data = await response.json().catch(err => console.error(err));
-                console.log(data)
-                const user = await data.users.users;
-                setUserData(user)
-                console.log(user)*/
-
-                fetch(`${url}/getuserbyid?id=${profileId}`, {method: 'GET'}).then((response)=>{
-                    //console.log('response '+response)
+            async function getFriends(){
+                fetch(`${url}/getuserfriends`, {
+                    method: 'GET',
+                    headers: {'Authorization':'Bearer ' + token }
+                })
+                .then((response)=>{
                     response.json().then((data)=>{
-                        console.log(data);
+                        console.log('Friends:')
+                        console.log(data)
+                    })
+                })
+            }
+
+            const fetchUserData = async () => {
+                fetch(`${url}/getuserbyid?id=${profileId}`, 
+                {
+                    method: 'GET'
+                })
+                    .then((response)=>{
+                    response.json().then((data)=>{
                         setUserData(data.users.users)
                     }).catch((err)=>console.error(err))
                 })
             }
 
-            if(idMatched){
-                setUserData(myData)
-            }else{
-                fetchUserData()
-            }
-
+            fetchMyData();
+            getFriends();
     }
     }, [token])
 
-    var currentUserID = 1;
-    var userID = 1;
-    /*
-    const userData = {
-        username: "John",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sed mauris eget eros dignissim eleifend. Proin vitae sem consequat, gravida sapien vitae, auctor erat. Sed accumsan at neque ac scelerisque. Etiam ut leo sed odio fringilla aliquam. Nam feugiat consequat tempor. Aliquam at gravida odio. Aliquam at mollis arcu, et vulputate eros. Nullam lectus justo, accumsan sagittis turpis aliquam, suscipit pharetra risus. Ut imperdiet augue in felis accumsan, vitae elementum lectus dapibus. Donec mattis rutrum libero sed dictum. Curabitur finibus eros ex, et lobortis est vestibulum tempor. Morbi congue eu quam eu condimentum. Nulla non diam nec elit hendrerit maximus. Quisque finibus lacus ac justo pellentesque placerat. Aliquam efficitur vel odio eget tempor. Curabitur pharetra enim sit amet euismod tempor. ",
-        password: "password123",
-        email: "john.smith@email.com",
-        date:"01.01.2000",
-        friends: [1,2,3],
-        pins: [{id:1, opis:"pin1"}, {id:2, opis:"pin2"}],
-        categories: [{id:1, opis:"cat1"}, {id:2, opis:"cat2"}],
-        
-    }
-    */
     return (
-        <div className="UserProfile">
+        userData ? <div className="UserProfile">
             {idMatched &&
             <div className='settings-dropdown'>
                 <img className='settings-icon' src={cog} alt="settings cog wheel"/>
@@ -97,9 +94,9 @@ function UserProfile(){
             <div className='bottomContainer'>
                 <div className="nameHolder">
                     <h1 className="profile-name">{userData && userData.name}</h1>
-                    {userID != currentUserID && !userData.friends.includes(userID) &&
+                    {/* !idMatched && !userData.friends.includes(profileId) &&
                     <button className="addFriend-btn" role="button"><span className="text">{}Add Friend</span></button>
-                    }
+                    */}
                 </div>
                 <span className="profile-date">Joined: {userData && userData.created_at}</span>
                 <p className="profile-description">{userData && userData.description}</p>
@@ -123,6 +120,7 @@ function UserProfile(){
                 */}
             </div>
         </div>
+        : <div>User not found</div>
     );
 }
 

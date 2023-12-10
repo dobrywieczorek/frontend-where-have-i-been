@@ -10,7 +10,8 @@ import {
   Route,
   Link,
   Outlet,
-  RouterProvider
+  RouterProvider,
+  Navigate
 } from 'react-router-dom'
 import Error404 from './components/Error404';
 import LoginPanel from './Pages/LoginPanel';
@@ -37,7 +38,8 @@ const router = createBrowserRouter(
       <Route element={<PrivateRoutes />}>
         <Route path='/home' element={<UserProfile />} />
         <Route path='/' element={<UserProfile />} />
-        <Route path='/profile' element={<UserProfile />}/>
+        {/* this needs current user id or maybe just remove this route */}
+        {/*<Route path='/profile' element={<Navigate to='/profile/${userID}' />}/>*/}
         <Route path='/profile/:profileId' element={<UserProfile />}/>
       </Route>
       <Route path='/test' element={<Test />} />
