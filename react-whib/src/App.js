@@ -15,6 +15,7 @@ import Error404 from './components/Error404';
 import LoginPanel from './Pages/LoginPanel';
 import RegisterPanel from './Pages/RegisterPanel';
 import UserSearchPanel from './Pages/UserSearchPanel';
+import MapView from './Pages/MapView';
 
 const Root = () => {
   return (
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
       <Route path='/login' element={<LoginPanel />}></Route>
       <Route path='/register' element={<RegisterPanel />}> </Route>
       <Route path='/usersearch' element={<UserSearchPanel />}></Route>
+      <Route path='/map' element={<MapView />}> </Route>
     </Route>
   )
 )
