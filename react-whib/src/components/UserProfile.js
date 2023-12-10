@@ -8,6 +8,9 @@ function UserProfile(){
     const [userData, setUserData] = useState();
     const [myData, setMyData] = useState();
     const [idMatched, setIDMatched] = useState(false);
+    const [friends, setFriends] = useState(null);
+    const [isFriend, setisFriend] = useState(true)
+
     const url = 'http://localhost:8000/api'
 
     //curly braces = destructuring
@@ -51,7 +54,10 @@ function UserProfile(){
                 .then((response)=>{
                     response.json().then((data)=>{
                         console.log('Friends:')
-                        console.log(data)
+                        //console.log(data.friends[0].friend_with_user_id)
+                        setFriends(data.friends)
+
+                        setisFriend(checkIfFriends(data.friends, profileId))
                     })
                 })
             }
@@ -72,6 +78,54 @@ function UserProfile(){
             getFriends();
     }
     }, [token])
+
+    function addFriend(){
+        fetch(`${url}/addfriend/?friend_id=${profileId}`, {
+            method: 'POST',
+            headers: 
+            {
+                'Authorization':'Bearer ' + token,
+            },
+        }).then((response)=>{
+            response.json().then((data)=>{
+                console.log('Friend added:')
+                console.log(data)
+                setisFriend(true);
+            }).catch((err)=>console.log(err))
+        })
+    }
+
+    function deleteFriend(){
+        fetch(`${url}/deletefriend/?friend_id=${profileId}`, {
+            method: 'POST',
+            headers: 
+            {
+                'Authorization':'Bearer ' + token,
+            },
+        }).then((response)=>{
+            response.json().then((data)=>{
+                console.log('Friend removed:')
+                console.log(data)
+                setisFriend(false);
+            }).catch((err)=>console.log(err))
+        })
+    }
+
+    function checkIfFriends(friendList, id){
+
+        let friendFound = false;
+
+        friendList.forEach(friend => {
+            if(friend.friend_with_user_id == id){
+                console.log('found friend')
+                friendFound = true;
+                return;
+            }
+            
+        }); 
+        console.log('friend not found')
+        return friendFound;
+    }
 
     return (
         userData ? <div className="UserProfile">
@@ -94,9 +148,12 @@ function UserProfile(){
             <div className='bottomContainer'>
                 <div className="nameHolder">
                     <h1 className="profile-name">{userData && userData.name}</h1>
-                    {/* !idMatched && !userData.friends.includes(profileId) &&
-                    <button className="addFriend-btn" role="button"><span className="text">{}Add Friend</span></button>
-                    */}
+                    { (!idMatched && !isFriend) &&
+                    <button className="addFriend-btn" role="button" onClick={addFriend}><span className="text">Add Friend</span></button>
+                    }
+                    { (!idMatched && isFriend) &&
+                    <button className='deleteFriend-btn' role='button' onClick={deleteFriend}> Remove Friend </button>
+                    }
                 </div>
                 <span className="profile-date">Joined: {userData && userData.created_at}</span>
                 <p className="profile-description">{userData && userData.description}</p>
