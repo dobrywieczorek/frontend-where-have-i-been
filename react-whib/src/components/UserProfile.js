@@ -6,13 +6,14 @@ import { useParams } from 'react-router-dom';
 
 function UserProfile(){
     const [userData, setUserData] = useState();
+    const [myData, setMyData] = useState();
+    const [idMatched, setIDMatched] = useState(false);
     const url = 'http://localhost:8000/api'
 
     //curly braces = destructuring
-    const {token} = useContext(UserContext)
+    const { token } = useContext(UserContext)
 
-    let params = useParams()
-    console.log(params)
+    let { profileId } = useParams()
 
     const requestOptions = {
         method: 'POST',
@@ -21,14 +22,42 @@ function UserProfile(){
     
     useEffect(() => {
         if(token != null){
-            console.log(token);
-            const fetchUserData = async () => {
+            //console.log(token);
+
+            async function fetchMyData() {
                 const response = await fetch(`${url}/whoami`, requestOptions);
                 const data = await response.json().catch(err => console.error(err));
+                if(profileId == data.id){
+                    console.log("ids match")
+                    setIDMatched(true);
+                }
                 console.log(data);
-                setUserData(data);
+                setMyData(data);
             };
-            fetchUserData();
+
+            const fetchUserData = async () => {
+                /*const response = await fetch(`${url}/getuserbyid?id=${profileId}`, {method: 'GET'});
+                const data = await response.json().catch(err => console.error(err));
+                console.log(data)
+                const user = await data.users.users;
+                setUserData(user)
+                console.log(user)*/
+
+                fetch(`${url}/getuserbyid?id=${profileId}`, {method: 'GET'}).then((response)=>{
+                    //console.log('response '+response)
+                    response.json().then((data)=>{
+                        console.log(data);
+                        setUserData(data.users.users)
+                    }).catch((err)=>console.error(err))
+                })
+            }
+
+            if(idMatched){
+                setUserData(myData)
+            }else{
+                fetchUserData()
+            }
+
     }
     }, [token])
 
@@ -49,7 +78,7 @@ function UserProfile(){
     */
     return (
         <div className="UserProfile">
-            {userID == currentUserID &&
+            {idMatched &&
             <div className='settings-dropdown'>
                 <img className='settings-icon' src={cog} alt="settings cog wheel"/>
                     <ul className='settings-menu'>
