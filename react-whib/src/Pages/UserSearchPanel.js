@@ -10,21 +10,37 @@ export default function UserSearchPanel() {
         event.preventDefault();
         
         if (!searchQuery.trim()) {
-            setError('Wpisz nazwę użytkownika do wyszukania.');
+            setError('Wpisz nazwę użytkownika do wyszukania lub # użytkownika!');
             return;
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/api/getusersbyname?name=${searchQuery}`);
+            let modifiedSearchQuery = searchQuery;
+            let endpoint = 'getusersbyname';
+            let searchParam = 'name';
+
+            if (searchQuery.startsWith('#')) {
+                endpoint = 'getuserbyid';
+                searchParam = 'id';
+                modifiedSearchQuery = searchQuery.substring(1);
+            }
+
+            const response = await fetch(`http://localhost:8000/api/${endpoint}?${searchParam}=${modifiedSearchQuery}`);
             const data = await response.json();
     
             if (data && data.users && data.users.success) {
                 const foundUsers = data.users.users;
-    
-                if (foundUsers.length > 0) {
+            
+                if (Array.isArray(foundUsers) && foundUsers.length > 0) {
+                    // Check if users were found by name
                     setSearchResults(foundUsers);
                     setError('');
+                } else if (foundUsers && typeof foundUsers === 'object' && foundUsers.id) {
+                    // Check if user was found by ID
+                    setSearchResults([foundUsers]);
+                    setError('');
                 } else {
+                    // No users found
                     setSearchResults([]);
                     setError('Brak wyników dla podanej nazwy użytkownika.');
                 }
