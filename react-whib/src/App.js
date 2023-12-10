@@ -16,6 +16,7 @@ import {
 import Error404 from './components/Error404';
 import LoginPanel from './Pages/LoginPanel';
 import RegisterPanel from './Pages/RegisterPanel';
+import MapView from './Pages/MapView';
 
 import { UserContext } from './contexts/AuthContext';
 import PrivateRoutes from './components/PrivateRoutes';
@@ -46,6 +47,7 @@ const router = createBrowserRouter(
       <Route path='*' element={<Error404 />}></Route>
       <Route path='/login' element={<LoginPanel />}></Route>
       <Route path='/register' element={<RegisterPanel />}> </Route>
+      <Route path='/map' element={<MapView />}> </Route>
     </Route>
   )
 )
