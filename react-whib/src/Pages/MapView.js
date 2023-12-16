@@ -26,11 +26,11 @@ const MapView = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const pinsData = await getPinsData();
-			console.log("pinezki: ", pinsData);
-			let locations = pinsData.map_pins;
-
 			if (!mapInitialized && access_token) {
+				const pinsData = await getPinsData();
+				console.log("pinezki: ", pinsData);
+				let locations = pinsData.map_pins;
+
 				const map = L.map('map').setView([51.505, -0.09], 13);
 				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -63,20 +63,12 @@ const MapView = () => {
 				setMapInitialized(true);
 			}
 			else if (!mapInitialized && !access_token) {
-				// Sprawdź, czy element z id "map" istnieje na stronie
-				const mapContainer = document.getElementById('map');
-			
-				if (mapContainer) {
-					const map = L.map('map').setView([51.505, -0.09], 13);
-					L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-						attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-					}).addTo(map);
-			
-					setMapInitialized(true);
-				} else {
-					// Obsłuż brak kontenera mapy na stronie (możesz wyświetlić komunikat lub podjąć inną decyzję)
-					console.error("Brak kontenera mapy na stronie.");
-				}
+				const map = L.map('map').setView([51.505, -0.09], 13);
+				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+				}).addTo(map);
+
+				setMapInitialized(true);
 			}
 		};
 
