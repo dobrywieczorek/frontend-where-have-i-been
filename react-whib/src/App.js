@@ -39,8 +39,7 @@ const router = createBrowserRouter(
       <Route element={<PrivateRoutes />}>
         <Route path='/home' element={<UserProfile />} />
         <Route path='/' element={<UserProfile />} />
-        {/* this needs current user id or maybe just remove this route */}
-        {/*<Route path='/profile' element={<Navigate to='/profile/${userID}' />}/>*/}
+        <Route path='profile' element={<UserProfile />} />
         <Route path='/profile/:profileId' element={<UserProfile />}/>
       </Route>
       <Route path='/test' element={<Test />} />

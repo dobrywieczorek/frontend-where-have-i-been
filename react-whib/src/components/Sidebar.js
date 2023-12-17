@@ -39,7 +39,7 @@ function Sidebar(){
                 <NavLink className='navlink' title='Map' to="/map"><img src={mapIcon} /></NavLink>
                 {token != 'null' ? 
                 <>
-                <NavLink className='navlink' title='Profile' to="/profile"><img src={profileIcon} /></NavLink> 
+                <NavLink className='navlink' title='Profile' to="/profile/myprofile"><img src={profileIcon} /></NavLink> 
                 <button onClick={logout}>Logout</button>
                 </>
                 : <NavLink className='navlink' title='Log into your account' to="/login">Log in</NavLink>

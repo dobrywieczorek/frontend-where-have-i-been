@@ -6,11 +6,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 function UserProfile(){
     const [userData, setUserData] = useState();
-    const [myData, setMyData] = useState();
     const [idMatched, setIDMatched] = useState(false);
-    const [friends, setFriends] = useState(null);
-    const [isFriend, setisFriend] = useState(true)
-    const navigate = useNavigate()
+    //const [friends, setFriends] = useState(null);
+    const [isFriend, setisFriend] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     const url = 'http://localhost:8000/api'
 
@@ -35,15 +34,11 @@ function UserProfile(){
                     response.json().then((data)=>{
                         console.log(data)
                         
-                        if(profileId == 'myprofile'){
-                            navigate(`../profile/${data.id}`)
-                            window.location.reload()
-                        }
-                        
-                        if(profileId == data.id){
+                        if(profileId == data.id || profileId == 'myprofile' || profileId == null){
                             console.log('ids match')
                             setIDMatched(true);
-                            setUserData(data)
+                            setUserData(data);
+                            setLoading(false);
                         }else{
                             fetchUserData()
                         }
@@ -60,7 +55,7 @@ function UserProfile(){
                     response.json().then((data)=>{
                         console.log('Friends:')
                         
-                        setFriends(data.friends)
+                        //setFriends(data.friends)
 
                         setisFriend(checkIfFriends(data.friends, profileId))
                     })
@@ -74,7 +69,12 @@ function UserProfile(){
                 })
                     .then((response)=>{
                     response.json().then((data)=>{
-                        setUserData(data.users.users)
+                        if(!data.users.users){
+                            console.log('User not found!')
+                        }else{
+                            setUserData(data.users.users)
+                        }
+                        setLoading(false)
                     }).catch((err)=>console.error(err))
                 })
             }
@@ -133,39 +133,41 @@ function UserProfile(){
     }
 
     return (
-        userData ? <div className="UserProfile">
-            {idMatched &&
-            <div className='settings-dropdown'>
-                <img className='settings-icon' src={cog} alt="settings cog wheel"/>
-                    <ul className='settings-menu'>
-                        <li>Change name</li>
-                        <li>Change description</li>
-                        <li>Change email</li>
-                        <li>Change password</li>
-                    </ul>
-            </div>
-            }
-            
-            <div className="topContainer">
-                <div className="profile-bg"></div>
-                <div className="profile-img"><img></img></div>
-            </div>
-            <div className='bottomContainer'>
-                <div className="nameHolder">
-                    <h1 className="profile-name">{userData && userData.name}</h1>
-                    { (!idMatched && !isFriend) &&
-                    <button className="addFriend-btn" role="button" onClick={addFriend}><span className="text">Add Friend</span></button>
-                    }
-                    { (!idMatched && isFriend) &&
-                    <button className='deleteFriend-btn' role='button' onClick={deleteFriend}> Remove Friend </button>
-                    }
+        !loading ? 
+            userData ? <div className="UserProfile">
+                {idMatched &&
+                <div className='settings-dropdown'>
+                    <img className='settings-icon' src={cog} alt="settings cog wheel"/>
+                        <ul className='settings-menu'>
+                            <li>Change name</li>
+                            <li>Change description</li>
+                            <li>Change email</li>
+                            <li>Change password</li>
+                        </ul>
                 </div>
-                <span className="profile-date">Joined: {userData && userData.created_at}</span>
-                <p className="profile-description">{userData && userData.description}</p>
+                }
+                
+                <div className="topContainer">
+                    <div className="profile-bg"></div>
+                    <div className="profile-img"><img></img></div>
+                </div>
+                <div className='bottomContainer'>
+                    <div className="nameHolder">
+                        <h1 className="profile-name">{userData && userData.name}</h1>
+                        { (!idMatched && !isFriend) &&
+                        <button className="addFriend-btn" role="button" onClick={addFriend}><span className="text">Add Friend</span></button>
+                        }
+                        { (!idMatched && isFriend) &&
+                        <button className='deleteFriend-btn' role='button' onClick={deleteFriend}> Remove Friend </button>
+                        }
+                    </div>
+                    <span className="profile-date">Joined: {userData && userData.created_at}</span>
+                    <p className="profile-description">{userData && userData.description}</p>
 
+                </div>
             </div>
-        </div>
-        : <div>User not found</div>
+            : <div>User not found!</div>
+        : <div>Loading</div>
     );
 }
 
