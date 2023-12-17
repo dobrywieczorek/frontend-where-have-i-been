@@ -155,10 +155,10 @@ function UserProfile(){
                     <div className="nameHolder">
                         <h1 className="profile-name">{userData && userData.name}</h1>
                         { (!idMatched && !isFriend) &&
-                        <button className="addFriend-btn" role="button" onClick={addFriend}><span className="text">Add Friend</span></button>
+                        <button id='addFriend-btn' className="btn" role="button" onClick={addFriend}><span className="text">Add Friend</span></button>
                         }
                         { (!idMatched && isFriend) &&
-                        <button className='deleteFriend-btn' role='button' onClick={deleteFriend}> Remove Friend </button>
+                        <button id='deleteFriend-btn' className='btn' role='button' onClick={deleteFriend}><span className="text">Remove Friend</span></button>
                         }
                     </div>
                     <span className="profile-date">Joined: {userData && userData.created_at}</span>

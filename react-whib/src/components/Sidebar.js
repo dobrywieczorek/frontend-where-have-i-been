@@ -22,6 +22,7 @@ function Sidebar(){
     function logout(){
         setToken(null);
         localStorage.removeItem('access_token');
+        localStorage.removeItem('token_type');
         navigate("/home");
     }
 
