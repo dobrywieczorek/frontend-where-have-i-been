@@ -21,7 +21,7 @@ function Sidebar(){
 
     function logout(){
         setToken(null);
-        localStorage.setItem('access_token', null);
+        localStorage.removeItem('access_token');
         navigate("/home");
     }
 
@@ -37,7 +37,7 @@ function Sidebar(){
             <div id='sidebar-menu' className={isActive ? 'menu-open' : null}>
                 <NavLink className='navlink' title='Home' to="/"><img src={homeIcon} /></NavLink>
                 <NavLink className='navlink' title='Map' to="/map"><img src={mapIcon} /></NavLink>
-                {token != 'null' ? 
+                {token != null ? 
                 <>
                 <NavLink className='navlink' title='Profile' to="/profile/myprofile"><img src={profileIcon} /></NavLink> 
                 <button onClick={logout}>Logout</button>
