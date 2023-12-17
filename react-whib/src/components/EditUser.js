@@ -76,14 +76,14 @@ function EditUserPage() {
 
     return (
         <div className="flex justify-center items-center h-screen">
-            <div className="max-w-md w-full px-4 py-8 bg-white shadow-lg rounded-lg">
-                <h1 className="text-2xl mb-6 font-semibold text-gray-800 text-center">Edit User</h1>
+            <div className="max-w-md w-full px-6 py-10 bg-white shadow-lg rounded-lg">
+                <h1 className="text-3xl mb-8 font-semibold text-gray-800 text-center">Ustawienia użytkownika</h1>
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+                    <div className="mb-6">
+                        <label className="block text-gray-700 text-lg font-semibold mb-3" htmlFor="name">
                             Nowa nazwa konta:
                             <input
-                                className="border rounded-lg px-3 py-2 mt-1 w-full focus:outline-none focus:border-blue-500"
+                                className="border rounded-lg font-normal px-4 py-3 mt-2 w-full focus:outline-none focus:border-blue-500"
                                 type="text"
                                 id="name"
                                 value={name}
@@ -91,14 +91,14 @@ function EditUserPage() {
                             />
                         </label>
                         {nameError && (
-                            <p className="text-red-500 text-xs italic">{nameError}</p>
+                            <p className="text-red-500 text-sm italic">{nameError}</p>
                         )}
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                    <div className="mb-6">
+                        <label className="block text-gray-700 text-lg font-semibold mb-3" htmlFor="password">
                             Nowe hasło:
                             <input
-                                className="border rounded-lg px-3 py-2 mt-1 w-full focus:outline-none focus:border-blue-500"
+                                className="border rounded-lg font-normal px-4 py-3 mt-2 w-full focus:outline-none focus:border-blue-500"
                                 type="password"
                                 id="password"
                                 value={password}
@@ -106,14 +106,14 @@ function EditUserPage() {
                             />
                         </label>
                         {passwordError && (
-                            <p className="text-red-500 text-xs italic">{passwordError}</p>
+                            <p className="text-red-500 text-sm italic">{passwordError}</p>
                         )}
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+                    <div className="mb-6">
+                        <label className="block text-gray-700 text-lg font-semibold mb-3" htmlFor="description">
                             Opis:
                             <textarea
-                                className="border rounded-lg px-3 py-2 mt-1 w-full h-24 resize-none focus:outline-none focus:border-blue-500"
+                                className="border rounded-lg font-normal px-4 py-3 mt-2 w-full h-28 resize-none focus:outline-none focus:border-blue-500"
                                 id="description"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
@@ -122,14 +122,14 @@ function EditUserPage() {
                     </div>
                     <button
                         type="submit"
-                        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+                        className="bg-blue-500 text-white py-3 px-6 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
                     >
                         Zapisz zmiany
                     </button>
                 </form>
             </div>
         </div>
-    );
+    );         
 }
 
 export default EditUserPage;
