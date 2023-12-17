@@ -37,7 +37,7 @@ export default function LoginPanel() {
 				localStorage.setItem("access_token", json.access_token);
 				localStorage.setItem("token_type", json.token_type);
 				
-				navigate("/home");
+				navigate("/map");
 			} else if(json.errors === "Invalid login details") {
 				setError("Niepoprawny adres email lub hasło");
 			}
@@ -84,7 +84,7 @@ export default function LoginPanel() {
 						</button>
 					</form>
 					<p className="mt-3">Nie pamiętasz hasła? <Link className="text-blue-400 hover:text-blue-700" to="/">Zresetuj hasło</Link></p>
-					<p className="mt-3">Nie masz jeszcze konta? <Link className="text-blue-400 hover:text-blue-700" to="/">Zarejestruj się</Link></p>
+					<p className="mt-3">Nie masz jeszcze konta? <Link className="text-blue-400 hover:text-blue-700" to="/register">Zarejestruj się</Link></p>
 				</div>
 			</div>
 		</>
