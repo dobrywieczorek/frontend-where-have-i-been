@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import '../css/UserProfile.css';
 import cog from '../img/cog.svg';
 import { UserContext } from '../contexts/AuthContext';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function UserProfile(){
     const [userData, setUserData] = useState();
@@ -10,10 +10,10 @@ function UserProfile(){
     const [idMatched, setIDMatched] = useState(false);
     const [friends, setFriends] = useState(null);
     const [isFriend, setisFriend] = useState(true)
+    const navigate = useNavigate()
 
     const url = 'http://localhost:8000/api'
 
-    //curly braces = destructuring
     const { token } = useContext(UserContext)
 
     let { profileId } = useParams()
@@ -34,7 +34,12 @@ function UserProfile(){
                 .then((response)=>{
                     response.json().then((data)=>{
                         console.log(data)
-
+                        
+                        if(profileId == 'myprofile'){
+                            navigate(`../profile/${data.id}`)
+                            window.location.reload()
+                        }
+                        
                         if(profileId == data.id){
                             console.log('ids match')
                             setIDMatched(true);
@@ -54,7 +59,7 @@ function UserProfile(){
                 .then((response)=>{
                     response.json().then((data)=>{
                         console.log('Friends:')
-                        //console.log(data.friends[0].friend_with_user_id)
+                        
                         setFriends(data.friends)
 
                         setisFriend(checkIfFriends(data.friends, profileId))
@@ -157,24 +162,7 @@ function UserProfile(){
                 </div>
                 <span className="profile-date">Joined: {userData && userData.created_at}</span>
                 <p className="profile-description">{userData && userData.description}</p>
-                {/*<section>
-                    <h2>Favorite Categories</h2>
-                    <p>{userData && userData.categories.map((cat) => {
-                        console.log(cat.id);
-                        return (
-                            <span key={cat.id}><a href="#">{cat.description}</a> </span>
-                        )
-                    })}</p>
-                </section>
-                <section>
-                    <h2>Pins</h2>
-                    <p>{userData && userData.pins.map((pin) => {
-                        return (
-                            <span key={pin.id}><a href="#">{pin.description}</a> </span>
-                        )
-                    })}</p>
-                </section>
-                */}
+
             </div>
         </div>
         : <div>User not found</div>
