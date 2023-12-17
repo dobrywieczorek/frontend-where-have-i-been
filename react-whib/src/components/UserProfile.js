@@ -1,87 +1,173 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import '../css/UserProfile.css';
 import cog from '../img/cog.svg';
+import { UserContext } from '../contexts/AuthContext';
+import { useNavigate, useParams } from 'react-router-dom';
+
 function UserProfile(){
     const [userData, setUserData] = useState();
+    const [idMatched, setIDMatched] = useState(false);
+    //const [friends, setFriends] = useState(null);
+    const [isFriend, setisFriend] = useState(true);
+    const [loading, setLoading] = useState(true);
+
     const url = 'http://localhost:8000/api'
-    var token = "5|jTr5DwEywz607T1QSdTfTnVUoUZ8E4Zrf6ZN9plDab15e0ed"
+
+    const { token } = useContext(UserContext)
+
+    let { profileId } = useParams()
+
     const requestOptions = {
         method: 'POST',
         headers: {'Authorization':'Bearer ' + token},
     };
     
     useEffect(() => {
-        const fetchUserData = async () => {
-            const response = await fetch(`${url}/whoami`, requestOptions);
-            const data = await response.json();
-            console.log(data);
-            setUserData(data);
-        };
-        fetchUserData();
-    }, [])
+        if(token != null){
+            async function fetchMyData() {
+                fetch(`${url}/whoami`, 
+                {
+                    method: 'POST',
+                    headers: {'Authorization':'Bearer ' + token},
+                })
+                .then((response)=>{
+                    response.json().then((data)=>{
+                        console.log(data)
+                        
+                        if(profileId == data.id || profileId == 'myprofile' || profileId == null){
+                            console.log('ids match')
+                            setIDMatched(true);
+                            setUserData(data);
+                            setLoading(false);
+                        }else{
+                            fetchUserData()
+                        }
+                    })
+                })
+            };
 
-    var currentUserID = 1;
-    var userID = 1;
-    /*
-    const userData = {
-        username: "John",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sed mauris eget eros dignissim eleifend. Proin vitae sem consequat, gravida sapien vitae, auctor erat. Sed accumsan at neque ac scelerisque. Etiam ut leo sed odio fringilla aliquam. Nam feugiat consequat tempor. Aliquam at gravida odio. Aliquam at mollis arcu, et vulputate eros. Nullam lectus justo, accumsan sagittis turpis aliquam, suscipit pharetra risus. Ut imperdiet augue in felis accumsan, vitae elementum lectus dapibus. Donec mattis rutrum libero sed dictum. Curabitur finibus eros ex, et lobortis est vestibulum tempor. Morbi congue eu quam eu condimentum. Nulla non diam nec elit hendrerit maximus. Quisque finibus lacus ac justo pellentesque placerat. Aliquam efficitur vel odio eget tempor. Curabitur pharetra enim sit amet euismod tempor. ",
-        password: "password123",
-        email: "john.smith@email.com",
-        date:"01.01.2000",
-        friends: [1,2,3],
-        pins: [{id:1, opis:"pin1"}, {id:2, opis:"pin2"}],
-        categories: [{id:1, opis:"cat1"}, {id:2, opis:"cat2"}],
-        
+            async function getFriends(){
+                fetch(`${url}/getuserfriends`, {
+                    method: 'GET',
+                    headers: {'Authorization':'Bearer ' + token }
+                })
+                .then((response)=>{
+                    response.json().then((data)=>{
+                        console.log('Friends:')
+                        
+                        //setFriends(data.friends)
+
+                        setisFriend(checkIfFriends(data.friends, profileId))
+                    })
+                })
+            }
+
+            const fetchUserData = async () => {
+                fetch(`${url}/getuserbyid?id=${profileId}`, 
+                {
+                    method: 'GET'
+                })
+                    .then((response)=>{
+                    response.json().then((data)=>{
+                        if(!data.users.users){
+                            console.log('User not found!')
+                        }else{
+                            setUserData(data.users.users)
+                        }
+                        setLoading(false)
+                    }).catch((err)=>console.error(err))
+                })
+            }
+
+            fetchMyData();
+            getFriends();
     }
-    */
-    return (
-        <div className="UserProfile">
-            {userID == currentUserID &&
-            <div className='settings-dropdown'>
-                <img className='settings-icon' src={cog} alt="settings cog wheel"/>
-                    <ul className='settings-menu'>
-                        <li>Change name</li>
-                        <li>Change description</li>
-                        <li>Change email</li>
-                        <li>Change password</li>
-                    </ul>
-            </div>
+    }, [token])
+
+    function addFriend(){
+        fetch(`${url}/addfriend/?friend_id=${profileId}`, {
+            method: 'POST',
+            headers: 
+            {
+                'Authorization':'Bearer ' + token,
+            },
+        }).then((response)=>{
+            response.json().then((data)=>{
+                console.log('Friend added:')
+                console.log(data)
+                setisFriend(true);
+            }).catch((err)=>console.log(err))
+        })
+    }
+
+    function deleteFriend(){
+        fetch(`${url}/deletefriend/?friend_id=${profileId}`, {
+            method: 'POST',
+            headers: 
+            {
+                'Authorization':'Bearer ' + token,
+            },
+        }).then((response)=>{
+            response.json().then((data)=>{
+                console.log('Friend removed:')
+                console.log(data)
+                setisFriend(false);
+            }).catch((err)=>console.log(err))
+        })
+    }
+
+    function checkIfFriends(friendList, id){
+
+        let friendFound = false;
+
+        friendList.forEach(friend => {
+            if(friend.friend_with_user_id == id){
+                console.log('found friend')
+                friendFound = true;
+                return;
             }
             
-            <div className="topContainer">
-                <div className="profile-bg"></div>
-                <div className="profile-img"><img></img></div>
-            </div>
-            <div className='bottomContainer'>
-                <div className="nameHolder">
-                    <h1 className="profile-name">{userData && userData.name}</h1>
-                    {userID != currentUserID && !userData.friends.includes(userID) &&
-                    <button className="addFriend-btn" role="button"><span className="text">{}Add Friend</span></button>
-                    }
+        }); 
+        console.log('friend not found')
+        return friendFound;
+    }
+
+    return (
+        !loading ? 
+            userData ? <div className="UserProfile">
+                {idMatched &&
+                <div className='settings-dropdown'>
+                    <img className='settings-icon' src={cog} alt="settings cog wheel"/>
+                        <ul className='settings-menu'>
+                            <li>Change name</li>
+                            <li>Change description</li>
+                            <li>Change email</li>
+                            <li>Change password</li>
+                        </ul>
                 </div>
-                <span className="profile-date">Joined: {userData && userData.created_at}</span>
-                <p className="profile-description">{userData && userData.description}</p>
-                {/*<section>
-                    <h2>Favorite Categories</h2>
-                    <p>{userData && userData.categories.map((cat) => {
-                        console.log(cat.id);
-                        return (
-                            <span key={cat.id}><a href="#">{cat.description}</a> </span>
-                        )
-                    })}</p>
-                </section>
-                <section>
-                    <h2>Pins</h2>
-                    <p>{userData && userData.pins.map((pin) => {
-                        return (
-                            <span key={pin.id}><a href="#">{pin.description}</a> </span>
-                        )
-                    })}</p>
-                </section>
-                */}
+                }
+                
+                <div className="topContainer">
+                    <div className="profile-bg"></div>
+                    <div className="profile-img"><img></img></div>
+                </div>
+                <div className='bottomContainer'>
+                    <div className="nameHolder">
+                        <h1 className="profile-name">{userData && userData.name}</h1>
+                        { (!idMatched && !isFriend) &&
+                        <button id='addFriend-btn' className="btn" role="button" onClick={addFriend}><span className="text">Add Friend</span></button>
+                        }
+                        { (!idMatched && isFriend) &&
+                        <button id='deleteFriend-btn' className='btn' role='button' onClick={deleteFriend}><span className="text">Remove Friend</span></button>
+                        }
+                    </div>
+                    <span className="profile-date">Joined: {userData && new Date(userData.created_at).toLocaleDateString()}</span>
+                    <p className="profile-description">{userData && userData.description}</p>
+
+                </div>
             </div>
-        </div>
+            : <div>User not found!</div>
+        : <div>Loading</div>
     );
 }
 
