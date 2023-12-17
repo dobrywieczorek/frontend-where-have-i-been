@@ -161,7 +161,7 @@ function UserProfile(){
                         <button id='deleteFriend-btn' className='btn' role='button' onClick={deleteFriend}><span className="text">Remove Friend</span></button>
                         }
                     </div>
-                    <span className="profile-date">Joined: {userData && userData.created_at}</span>
+                    <span className="profile-date">Joined: {userData && new Date(userData.created_at).toLocaleDateString()}</span>
                     <p className="profile-description">{userData && userData.description}</p>
 
                 </div>
