@@ -184,6 +184,14 @@ function UserProfile(){
                     <span className="profile-date">Joined: {userData && new Date(userData.created_at).toLocaleDateString()}</span>
                     <p className="profile-description">{userData && userData.description}</p>
 
+                    { userStats ? 
+                    <div className='userStats'>
+                        <div><span>Pins: </span>{userStats.numberOfPins}</div>
+                        <div><span>Friends: </span>{userStats.numberOfFriends}</div>
+                        <div><span>Observers: </span>{userStats.numberOfObservers}</div>
+                        <div><span>Most used Category: </span>{userStats.mostUsedPinCategory}</div>
+                    </div> : null}
+
                 </div>
             </div>
             : <div>User not found!</div>
