@@ -10,6 +10,7 @@ function UserProfile(){
     //const [friends, setFriends] = useState(null);
     const [isFriend, setisFriend] = useState(true);
     const [loading, setLoading] = useState(true);
+    const [userStats, setUserStats] = useState();
 
     const url = 'http://localhost:8000/api'
 
@@ -39,6 +40,9 @@ function UserProfile(){
                             setIDMatched(true);
                             setUserData(data);
                             setLoading(false);
+
+                            getUserStatistics(data.id);
+
                         }else{
                             fetchUserData()
                         }
@@ -62,6 +66,21 @@ function UserProfile(){
                 })
             }
 
+            function getUserStatistics(id){
+                fetch(`${url}/getUserStats?user_id=${id}`, {
+                    method: 'GET'
+                }).then((response)=>{
+                    response.json().then((data)=>{
+                        console.log('user stats:')
+                        console.log(data);
+
+                        setUserStats(data);
+                    })
+                }).catch((err) => {
+                    console.log(err)
+                })
+            }
+
             const fetchUserData = async () => {
                 fetch(`${url}/getuserbyid?id=${profileId}`, 
                 {
@@ -81,6 +100,7 @@ function UserProfile(){
 
             fetchMyData();
             getFriends();
+            //getUserStatistics();
     }
     }, [token])
 
