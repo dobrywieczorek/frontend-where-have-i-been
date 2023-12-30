@@ -170,7 +170,7 @@ function UserProfile(){
                 <div className="topContainer">
                     <div className="profile-bg"></div>
                     <div className="profile-img">
-                    <svg width="150" height="150" viewBox="0 -5 27 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="130" height="130" viewBox="0 -5 27 44" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="13.2609" cy="7.57764" r="7.57764" fill="black"/>
                         <path d="M26.5217 30.3106C26.5217 28.5691 26.1787 26.8447 25.5123 25.2358C24.8459 23.627 23.8691 22.1651 22.6377 20.9337C21.4063 19.7023 19.9445 18.7255 18.3356 18.0591C16.7267 17.3927 15.0023 17.0497 13.2609 17.0497C11.5194 17.0497 9.79504 17.3927 8.18615 18.0591C6.57727 18.7255 5.1154 19.7023 3.88402 20.9337C2.65263 22.1651 1.67584 23.627 1.00942 25.2358C0.343002 26.8447 -1.52242e-07 28.5691 0 30.3106L13.2609 30.3106H26.5217Z" fill="black"/>
                     </svg>
@@ -178,7 +178,7 @@ function UserProfile(){
                 </div>
                 <div className='bottomContainer'>
                     <div className="nameHolder">
-                        <h1 className="profile-name">{userData && userData.name}</h1>
+                        <h1 className="profile-name text-3xl font-bold">{userData && userData.name}</h1>
                         { (!idMatched && !isFriend) &&
                         <button id='addFriend-btn' className="btn" role="button" onClick={addFriend}><span className="text">Add Friend</span></button>
                         }
