@@ -1,12 +1,33 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { UserContext } from '../contexts/AuthContext';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function LoginPanel() {
   	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 	const navigate = useNavigate();
+
+	const [loginUrl, setLoginUrl] = useState(null);
+
+    useEffect(() => {
+        fetch('http://localhost:8000/api/auth', {
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Something went wrong!' + JSON.stringify(response));
+            })
+            .then((data) => setLoginUrl( data.url ))
+            .catch((error) => console.error(error));
+    }, []);
 
 	const {token, setToken} = useContext(UserContext); 
 
@@ -89,8 +110,12 @@ export default function LoginPanel() {
 							Zaloguj
 						</button>
 					</form>
-					<p className="mt-3">Nie pamiętasz hasła? <Link className="text-blue-400 hover:text-blue-700" to="/">Zresetuj hasło</Link></p>
-					<p className="mt-3">Nie masz jeszcze konta? <Link className="text-blue-400 hover:text-blue-700" to="/">Zarejestruj się</Link></p>
+					<p className="mt-3">Nie masz jeszcze konta? <Link className="text-blue-400 hover:text-blue-700" to="/register">Zarejestruj się</Link></p>
+
+					{loginUrl != null && (
+						<a href={loginUrl} class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-2">Google Sign In</a>
+					)}
+					
 				</div>
 			</div>
 	)
