@@ -22,6 +22,10 @@ import MapView from './Pages/MapView';
 import { UserContext } from './contexts/AuthContext';
 import PrivateRoutes from './components/PrivateRoutes';
 
+import { GoogleLogin } from '@react-oauth/google';
+
+import GoogleCallback from "./GoogleCallback";
+
 
 const Root = () => {
   return (
@@ -49,6 +53,7 @@ const router = createBrowserRouter(
       <Route path='/register' element={<RegisterPanel />}> </Route>
       <Route path='/usersearch' element={<UserSearchPanel />}></Route>
       <Route path='/map' element={<MapView />}> </Route>
+      <Route path="/auth/google" element={<GoogleCallback />}></Route>
     </Route>
   )
 )
