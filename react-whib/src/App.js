@@ -17,6 +17,7 @@ import LoginPanel from './Pages/LoginPanel';
 import RegisterPanel from './Pages/RegisterPanel';
 import UserSearchPanel from './Pages/UserSearchPanel';
 import MapView from './Pages/MapView';
+import FriendList from './Pages/Friends';
 
 const Root = () => {
   return (
@@ -41,6 +42,7 @@ const router = createBrowserRouter(
       <Route path='/usersearch' element={<UserSearchPanel />}></Route>
       <Route path='/map' element={<MapView />}> </Route>
       <Route path='/edit' element={<EditUser/>}> </Route>
+      <Route path='/friends' element={<FriendList />}/>
     </Route>
   )
 )
