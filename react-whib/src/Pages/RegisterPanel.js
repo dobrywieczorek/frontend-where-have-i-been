@@ -25,6 +25,11 @@ export default function RegisterPanel() {
     async function Register(event) {
         event.preventDefault();
 
+        if (name.includes('#')) {
+            setError('Nazwa nie może zawierać symbolu "#".');
+            return;
+        }
+        
         if (!validateEmail(email)) {
             setError('Nieprawidłowy adres e-mail!');
             return;
