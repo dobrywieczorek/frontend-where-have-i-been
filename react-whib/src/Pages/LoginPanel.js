@@ -60,6 +60,9 @@ export default function LoginPanel() {
 				console.log("Zalogowany, typ tokenu: ", json.token_type);
 				localStorage.setItem("access_token", json.access_token);
 				localStorage.setItem("token_type", json.token_type);
+
+				setToken(json.access_token);
+				console.log(token);
 				
 				navigate("/home");
 			} else if(json.errors === "Invalid login details") {
