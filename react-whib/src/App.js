@@ -3,6 +3,7 @@ import './components/UserProfile';
 import UserProfile from './components/UserProfile';
 import Sidebar from './components/Sidebar';
 import Test from './components/Test';
+import EditUser from './components/EditUser';
 import { useEffect, useState } from 'react';
 import {
   createBrowserRouter,
@@ -18,6 +19,7 @@ import LoginPanel from './Pages/LoginPanel';
 import RegisterPanel from './Pages/RegisterPanel';
 import UserSearchPanel from './Pages/UserSearchPanel';
 import MapView from './Pages/MapView';
+import FriendList from './Pages/Friends';
 
 import { UserContext } from './contexts/AuthContext';
 import PrivateRoutes from './components/PrivateRoutes';
@@ -53,6 +55,8 @@ const router = createBrowserRouter(
       <Route path='/register' element={<RegisterPanel />}> </Route>
       <Route path='/usersearch' element={<UserSearchPanel />}></Route>
       <Route path='/map' element={<MapView />}> </Route>
+      <Route path='/edit' element={<EditUser/>}> </Route>
+      <Route path='/friends' element={<FriendList />}/>
       <Route path="/auth/google" element={<GoogleCallback />}></Route>
     </Route>
   )
