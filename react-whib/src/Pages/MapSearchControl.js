@@ -51,6 +51,14 @@ const MapSearchControl = ({ map, pins, onPinSelect }) => {
         const dropdown = document.querySelector('.search-dropdown');
         if (!dropdown) return;
 
+        dropdown.onmouseover = () => {
+            map.scrollWheelZoom.disable();
+        };
+
+        dropdown.onmouseout = () => {
+            map.scrollWheelZoom.enable();
+        };
+
         if (filteredPins.length > 0 && searchTerm) {
             dropdown.style.display = 'block';
             dropdown.innerHTML = '';
@@ -62,7 +70,7 @@ const MapSearchControl = ({ map, pins, onPinSelect }) => {
         } else {
             dropdown.style.display = 'none';
         }
-    }, [filteredPins, onPinSelect, searchTerm]);
+    }, [filteredPins, onPinSelect, searchTerm, map]);
 
     return null;
 };
