@@ -21,6 +21,8 @@ const MapSearchControl = ({ map, pins, onPinSelect }) => {
 
                 const dropdown = L.DomUtil.create('div', 'search-dropdown', container);
                 dropdown.style.display = 'none';
+                L.DomEvent.disableScrollPropagation(container);
+                L.DomEvent.disableClickPropagation(container);
 
                 return container;
             }
@@ -50,14 +52,6 @@ const MapSearchControl = ({ map, pins, onPinSelect }) => {
     useEffect(() => {
         const dropdown = document.querySelector('.search-dropdown');
         if (!dropdown) return;
-
-        dropdown.onmouseover = () => {
-            map.scrollWheelZoom.disable();
-        };
-
-        dropdown.onmouseout = () => {
-            map.scrollWheelZoom.enable();
-        };
 
         if (filteredPins.length > 0 && searchTerm) {
             dropdown.style.display = 'block';
