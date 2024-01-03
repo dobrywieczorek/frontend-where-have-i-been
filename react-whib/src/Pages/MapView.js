@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './styles.css';
+import MapSearchControl from './MapSearchControl';
 
 import iconUrl from '../../node_modules/leaflet/dist/images/marker-icon.png';
 import iconRetinaUrl from '../../node_modules/leaflet/dist/images/marker-icon-2x.png';
@@ -14,6 +15,11 @@ const MapView = () => {
     const [userId, setUserId] = useState(0);
     const token = localStorage.getItem("access_token");
     const markersRef = useRef({});
+    const handlePinSelect = (pin) => {
+        if (thisMap) {
+            thisMap.flyTo([pin.latitude, pin.longitude], 15);
+        }
+    };
 
     useEffect(() => {
         if (!mapInitialized) {
@@ -196,6 +202,7 @@ const MapView = () => {
     return (
         <div>
             <div id="mapContainer" style={{ height: '600px', width: '100%' }}></div>
+            {thisMap && <MapSearchControl map={thisMap} pins={pins} onPinSelect={handlePinSelect} />}
             {newPinData.latitude != 0 && <div className="pin-form">
                 <form onSubmit={handleSubmit}>
                     <input type="text" name="pin_name" value={newPinData.pin_name} onChange={handleChange} placeholder="Nazwa" />
