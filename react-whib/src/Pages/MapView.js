@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import '../styles.css';
+import './styles.css';
 
 import iconUrl from '../../node_modules/leaflet/dist/images/marker-icon.png';
 import iconRetinaUrl from '../../node_modules/leaflet/dist/images/marker-icon-2x.png';
@@ -195,13 +195,18 @@ const MapView = () => {
 
     return (
         <div>
-            <div id="mapContainer" style={{ height: '500px', width: '100%' }}></div>
+            <div id="mapContainer" style={{ height: '600px', width: '100%' }}></div>
             {newPinData.latitude != 0 && <div className="pin-form">
                 <form onSubmit={handleSubmit}>
                     <input type="text" name="pin_name" value={newPinData.pin_name} onChange={handleChange} placeholder="Nazwa" />
                     <textarea name="description" value={newPinData.description} onChange={handleChange} placeholder="Opis"></textarea>
-                    <input type="text" name="category" value={newPinData.category} onChange={handleChange} placeholder="Kategoria" />
-                    
+                    <p>Kategoria</p>
+                    <select name="category" value={newPinData.category} onChange={handleChange}>
+                    <option value="widok">Widok</option>
+                    <option value="sklep">Sklep</option>
+                    <option value="zabawa">Zabawa</option>
+                    <option value="wakacje">Wakacje</option>
+                    </select>
                     <div className="favourite-checkbox">
                         <label htmlFor="favourite">Ulubione</label>
                         <input
