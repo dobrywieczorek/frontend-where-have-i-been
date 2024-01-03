@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './styles.css';
+import '../css/SearchControl.css'
 import MapSearchControl from './MapSearchControl';
 
 import iconUrl from '../../node_modules/leaflet/dist/images/marker-icon.png';
