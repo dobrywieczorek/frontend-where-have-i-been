@@ -214,7 +214,7 @@ const MapView = () => {
                     <option value="sklep">Sklep</option>
                     <option value="zabawa">Zabawa</option>
                     <option value="wakacje">Wakacje</option>
-                    <option value="inne">inne</option>
+                    <option value="inne">Inne</option>
                     </select>
                     <div className="favourite-checkbox">
                         <label htmlFor="favourite">Ulubione</label>
