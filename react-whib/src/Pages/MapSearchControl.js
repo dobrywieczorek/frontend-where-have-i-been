@@ -14,13 +14,13 @@ const MapSearchControl = ({ map, pins, onPinSelect }) => {
 
                 const input = L.DomUtil.create('input', 'search-input', container);
                 input.type = 'text';
-                input.placeholder = 'Search pin';
+                input.placeholder = 'Search pin or category';
                 input.oninput = function() {
                     setSearchTerm(input.value);
                 };
 
                 const dropdown = L.DomUtil.create('div', 'search-dropdown', container);
-                dropdown.style.display = 'none'; // Initially hide the dropdown
+                dropdown.style.display = 'none';
 
                 return container;
             }
@@ -39,7 +39,8 @@ const MapSearchControl = ({ map, pins, onPinSelect }) => {
     useEffect(() => {
         if (searchTerm) {
             setFilteredPins(pins.filter(pin => 
-                pin.pin_name.toLowerCase().includes(searchTerm.toLowerCase())
+                pin.pin_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (pin.category && pin.category.toLowerCase().includes(searchTerm.toLowerCase()))
             ));
         } else {
             setFilteredPins([]);
@@ -55,7 +56,7 @@ const MapSearchControl = ({ map, pins, onPinSelect }) => {
             dropdown.innerHTML = '';
             filteredPins.forEach(pin => {
                 const item = L.DomUtil.create('div', 'dropdown-item', dropdown);
-                item.innerText = pin.pin_name;
+                item.innerText = `${pin.pin_name} (${pin.category || 'No Category'})`;
                 item.onclick = () => onPinSelect(pin);
             });
         } else {
