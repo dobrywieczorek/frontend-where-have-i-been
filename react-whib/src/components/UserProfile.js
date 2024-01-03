@@ -194,7 +194,7 @@ function UserProfile(){
                         <div><span>Pins: </span>{userStats.numberOfPins}</div>
                         <div><span>Friends: </span>{userStats.numberOfFriends}</div>
                         <div><span>Observers: </span>{userStats.numberOfObservers}</div>
-                        <div><span>Most used Category: </span>{userStats.mostUsedPinCategory}</div>
+                        <div><span>Most used Category: </span>{userStats.mostUsedPinCategory.category}</div>
                     </div> : null}
 
                 </div>
