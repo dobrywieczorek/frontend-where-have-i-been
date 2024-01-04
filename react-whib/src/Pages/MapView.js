@@ -204,7 +204,7 @@ const MapView = () => {
         <div>
             <div id="mapContainer" style={{ height: '600px', width: '100%' }}></div>
             {thisMap && <MapSearchControl map={thisMap} pins={pins} onPinSelect={handlePinSelect} />}
-            {newPinData.latitude != 0 && <div className="pin-form">
+            {newPinData.latitude !== 0 && <div className="pin-form">
                 <form onSubmit={handleSubmit}>
                     <input type="text" name="pin_name" value={newPinData.pin_name} onChange={handleChange} placeholder="Nazwa" />
                     <textarea name="description" value={newPinData.description} onChange={handleChange} placeholder="Opis"></textarea>
