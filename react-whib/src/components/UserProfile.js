@@ -102,7 +102,7 @@ function UserProfile(){
             getFriends();
             //getUserStatistics();
     }
-    }, [token])
+    }, [token, profileId])
 
     function addFriend(){
         fetch(`${url}/addfriend/?friend_id=${profileId}`, {
