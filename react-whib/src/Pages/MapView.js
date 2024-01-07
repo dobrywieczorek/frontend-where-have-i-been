@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import './styles.css';
 import '../css/SearchControl.css'
 import MapSearchControl from './MapSearchControl';
+import TutorialModal from './TutorialModal';
 
 import iconUrl from '../../node_modules/leaflet/dist/images/marker-icon.png';
 import iconRetinaUrl from '../../node_modules/leaflet/dist/images/marker-icon-2x.png';
@@ -21,6 +22,19 @@ const MapView = () => {
             thisMap.flyTo([pin.latitude, pin.longitude], 15);
         }
     };
+    const [isTutorialVisible, setIsTutorialVisible] = useState(false);
+    const handleShowTutorial = () => {
+        setIsTutorialVisible(true);
+    };
+
+    //Checking if the tutorial has already been seen 
+    useEffect(() => {
+        const tutorialShown = document.cookie.split(';').some((item) => item.trim().startsWith('tutorialShown='));
+        if (!tutorialShown) {
+            setIsTutorialVisible(true);
+            document.cookie = "tutorialShown=true; path=/";
+        }
+    }, []);
 
     useEffect(() => {
         if (!mapInitialized) {
@@ -202,6 +216,7 @@ const MapView = () => {
 
     return (
         <div>
+            <TutorialModal isVisible={isTutorialVisible} setIsVisible={setIsTutorialVisible} />
             <div id="mapContainer" style={{ height: '600px', width: '100%' }}></div>
             {thisMap && <MapSearchControl map={thisMap} pins={pins} onPinSelect={handlePinSelect} />}
             {newPinData.latitude !== 0 && <div className="pin-form">
@@ -235,6 +250,7 @@ const MapView = () => {
                     <button type="submit" className="submit-btn">Dodaj Pinezkę</button>
                 </form>
             </div>}
+            <button onClick={handleShowTutorial}>Pokaż Samouczek</button>
         </div>
     );
 };
