@@ -3,6 +3,7 @@ import '../css/UserProfile.css';
 import cog from '../img/cog.svg';
 import { UserContext } from '../contexts/AuthContext';
 import { useNavigate, useParams } from 'react-router-dom';
+import MapView from '../Pages/MapView'
 
 function UserProfile(){
     const [userData, setUserData] = useState();
@@ -196,7 +197,7 @@ function UserProfile(){
                         <div><span>Observers: </span>{userStats.numberOfObservers}</div>
                         <div><span>Most used Category: </span>  {userStats.mostUsedPinCategory && userStats.mostUsedPinCategory.category ? userStats.mostUsedPinCategory.category : ''}</div>
                     </div> : null}
-
+                    <MapView></MapView>
                 </div>
             </div>
             : <div>User not found!</div>

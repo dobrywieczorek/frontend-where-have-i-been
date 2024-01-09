@@ -50,8 +50,8 @@ function Sidebar(){
                     <NavLink className='navlink' title='Register a new account' to="/register">Register</NavLink>
                   </>
                 }
-            </div>         
-            </div>   
+            </div>        
+            </div> 
         </div>
     )
 }
