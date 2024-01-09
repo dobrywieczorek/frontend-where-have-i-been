@@ -1,6 +1,5 @@
 import './css/App.css';
-import './components/UserProfile';
-import UserProfile from './components/UserProfile';
+import UserProfile from './Pages/UserProfile';
 import Sidebar from './components/Sidebar';
 import Test from './components/Test';
 import EditUser from './components/EditUser';
