@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     background-color: #eee;
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
     width: 0;
     max-width: 8rem;
@@ -11,6 +11,7 @@
     overflow: hidden;
     background-color: #fff;
     box-shadow: 6px 0px 12px rgba(0,0,0,0.25);
+    z-index: 100000;
 }
 
 .Sidebar.open{
@@ -127,6 +128,9 @@
   }
   @media (min-width: 1000px){
     #hamburger{
-      display: none;
+      visibility: hidden;
+    }
+    .Sidebar{
+      height: unset;
     }
   }

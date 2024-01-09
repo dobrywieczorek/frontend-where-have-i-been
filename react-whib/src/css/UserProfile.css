@@ -111,7 +111,7 @@
     height: 30px;
     position: absolute;
     top:10px;
-    right:10px;
+    right:25px;
     z-index: 1000;
     cursor: pointer;
   }
@@ -122,14 +122,11 @@
     visibility: hidden;
     position: absolute;
     top:20px;
-    right:10px;
+    right:50px;
   }
 
   @media (min-width: 768px) {
-    .UserProfile {
-      margin:auto;
 
-    }
     .profile-img{
       width: 200px;
       height: 200px;

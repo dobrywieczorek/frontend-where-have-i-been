@@ -1,17 +1,43 @@
 @media (min-width: 1000px){
+ /*
+    html, body, .App{
+        height: 100%;
+    }
     .Root-outlet{
         display: flex;
+        height:100%;
     }
 
     .Root-outlet>.Sidebar{
         position: relative;
-        width: 10%;
+        width: 200px;
         flex-grow: 0.1;
     }
     .Root-outlet>div:nth-child(2){
         width:10%;
         margin: 0;
-        flex:2;
+        flex:1;
+        border: 1px solid red;
     }
-}
+    */
+    .Root-outlet>.Sidebar{
+        position: relative;
+        width: 200px;
+        
+    }
 
+
+}
+html, body, .App, #root{
+    height: 100%;
+}
+.Root-outlet{
+    display: flex;
+    height: 100%;
+}
+.Root-outlet>div:nth-child(2){
+    flex:1;
+    overflow-y: scroll;
+    max-height: 100%;
+    max-width: 100%;
+}
