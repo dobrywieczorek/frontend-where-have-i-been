@@ -42,7 +42,7 @@ function UserProfile(){
     };
 
     useEffect(() => {
-        if (!mapInitialized && !loading) {
+        if (!mapInitialized && !loading && userData) {
             const map = L.map('mapContainer').setView([51.505, -0.09], 13);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
