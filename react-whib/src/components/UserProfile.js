@@ -1,9 +1,15 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import '../css/UserProfile.css';
 import cog from '../img/cog.svg';
 import { UserContext } from '../contexts/AuthContext';
 import { useNavigate, useParams } from 'react-router-dom';
-import MapView from '../Pages/MapView'
+
+import L from 'leaflet';
+import MapSearchControl from '../Pages/MapSearchControl';
+import iconUrl from '../../node_modules/leaflet/dist/images/marker-icon.png';
+import iconRetinaUrl from '../../node_modules/leaflet/dist/images/marker-icon-2x.png';
+import shadowUrl from '../../node_modules/leaflet/dist/images/marker-shadow.png';
+
 
 function UserProfile(){
     const [userData, setUserData] = useState();
@@ -23,6 +29,83 @@ function UserProfile(){
         method: 'POST',
         headers: {'Authorization':'Bearer ' + token},
     };
+
+    //start of map component
+    const [thisMap, setThisMap] = useState(null);
+    const [mapInitialized, setMapInitialized] = useState(false);
+    const [pins, setPins] = useState([]);
+    const markersRef = useRef({});
+    const handlePinSelect = (pin) => {
+        if (thisMap) {
+            thisMap.flyTo([pin.latitude, pin.longitude], 15);
+        }
+    };
+
+    useEffect(() => {
+        if (!mapInitialized && !loading) {
+            const map = L.map('mapContainer').setView([51.505, -0.09], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors',
+            }).addTo(map);
+
+            setThisMap(map);
+
+            fetchMapPins(map);
+
+
+            setMapInitialized(true);
+        }
+    }, [token, loading]);
+
+    const fetchMapPins = async (startedMap) => {
+        try {
+            const res = await fetch('http://localhost:8000/api/map-pins', {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!res.ok) {
+                throw new Error(`HTTP error! Status: ${res.status}`);
+            }
+
+            const data = await res.json();
+            setPins(data.map_pins);
+            renderPins(data.map_pins, startedMap);
+        } catch (error) {
+            console.error('Error fetching pins', error);
+        }
+    };
+
+    const addMarker = (pin, map) => {
+        const customIcon = new L.Icon({
+            iconUrl,
+            iconRetinaUrl,
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowUrl,
+            shadowSize: [41, 41],
+        });
+
+        let favourite = pin.favourite ? "tak" : "nie";
+        const marker = L.marker([pin.latitude, pin.longitude], { icon: customIcon })
+            .addTo(map)
+            .bindPopup(`<b>Nazwa: ${pin.pin_name}</b><br>
+                Opis: ${pin.description}<br>
+                Kategoria: ${pin.category}<br>
+                Ulubiony: ${favourite}<br>
+                <button onclick="window.deletePin(${pin.id})">Usuń pinezkę</button>`);
+
+        markersRef.current[pin.id] = marker;
+    };
+
+    const renderPins = (fetchedPins, startedMap) => {
+        fetchedPins.forEach(pin => addMarker(pin, startedMap));
+    };
+    //end of map component
     
     useEffect(() => {
         if(token != null){
@@ -197,7 +280,13 @@ function UserProfile(){
                         <div><span>Observers: </span>{userStats.numberOfObservers}</div>
                         <div><span>Most used Category: </span>  {userStats.mostUsedPinCategory && userStats.mostUsedPinCategory.category ? userStats.mostUsedPinCategory.category : ''}</div>
                     </div> : null}
-                    <MapView></MapView>
+                    
+                    <div>
+            <div id="mapContainer" style={{ height: '600px', width: '100%' }}></div>
+            {thisMap && <MapSearchControl map={thisMap} pins={pins} onPinSelect={handlePinSelect} />}
+
+        </div>
+
                 </div>
             </div>
             : <div>User not found!</div>
