@@ -2,8 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './styles.css';
+import './modalStyle.css';
 import '../css/SearchControl.css'
 import MapSearchControl from './MapSearchControl';
+
+import PinEditModal from '../components/PinEditModal';
 
 import iconUrl from '../../node_modules/leaflet/dist/images/marker-icon.png';
 import iconRetinaUrl from '../../node_modules/leaflet/dist/images/marker-icon-2x.png';
@@ -14,6 +17,7 @@ const MapView = () => {
     const [mapInitialized, setMapInitialized] = useState(false);
     const [pins, setPins] = useState([]);
     const [userId, setUserId] = useState(0);
+    const [pinId, setPinId] = useState(0);
     const token = localStorage.getItem("access_token");
     const markersRef = useRef({});
     const handlePinSelect = (pin) => {
@@ -21,7 +25,17 @@ const MapView = () => {
             thisMap.flyTo([pin.latitude, pin.longitude], 15);
         }
     };
-
+    const [editingPin, setEditingPin] = useState(null);
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [newPinData, setNewPinData] = useState({
+            pin_name: '',
+            description: '',
+            favourite: false,
+            latitude: 0,
+            longitude: 0,
+            user_id: 0,
+            category: '',
+        });
     useEffect(() => {
         if (!mapInitialized) {
             const map = L.map('mapContainer').setView([51.505, -0.09], 13);
@@ -58,6 +72,7 @@ const MapView = () => {
             }
 
             const data = await res.json();
+            console.log("PINEZKI PROSTO Z BAZY DANYCH! ", data.map_pins);
             setPins(data.map_pins);
             renderPins(data.map_pins, startedMap);
         } catch (error) {
@@ -102,30 +117,27 @@ const MapView = () => {
         getUserId();
     }, []);
 
-    const [newPinData, setNewPinData] = useState({
-        pin_name: '',
-        description: '',
-        favourite: false,
-        latitude: 0,
-        longitude: 0,
-        user_id: 0,
-        category: '',
-    });
+    
 
     useEffect(() => {
         setNewPinData({ ...newPinData, user_id: userId });
     }, [userId]);
-
+    
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         const newValue = type === 'checkbox' ? checked : value;
         setNewPinData({ ...newPinData, [name]: newValue });
     };
 
-    const handleSubmit = (e) => {
+    const handleAddSubmit = (e) => {
         e.preventDefault();
         addPin();
         setNewPinData({ pin_name: '', description: '', category: '', latitude: 0, longitude: 0, favourite: false });
+    };
+    
+    window.handleEdit = async (id) => {
+        setPinId(id)
+        setModalOpen(true);
     };
 
     const addMarker = (pin, map) => {
@@ -146,8 +158,10 @@ const MapView = () => {
                 Opis: ${pin.description}<br>
                 Kategoria: ${pin.category}<br>
                 Ulubiony: ${favourite}<br>
+                <button onclick="window.handleEdit(${pin.id})">Edytuj pinezkę</button>
                 <button onclick="window.deletePin(${pin.id})">Usuń pinezkę</button>`);
 
+        
         markersRef.current[pin.id] = marker;
     };
 
@@ -205,7 +219,8 @@ const MapView = () => {
             <div id="mapContainer" style={{ height: '600px', width: '100%' }}></div>
             {thisMap && <MapSearchControl map={thisMap} pins={pins} onPinSelect={handlePinSelect} />}
             {newPinData.latitude !== 0 && <div className="pin-form">
-                <form onSubmit={handleSubmit}>
+                <h1>Dodawanie pinezki</h1>
+                <form onSubmit={handleAddSubmit}>
                     <input type="text" name="pin_name" value={newPinData.pin_name} onChange={handleChange} placeholder="Nazwa" />
                     <textarea name="description" value={newPinData.description} onChange={handleChange} placeholder="Opis"></textarea>
                     <p>Kategoria</p>
@@ -229,12 +244,27 @@ const MapView = () => {
 
                     <div className="location-display">
                         <label>Lokalizacja:</label>
-                        <span>{newPinData.latitude.toFixed(3)}, {newPinData.longitude.toFixed(3)}</span>
+                        <span>{parseFloat(newPinData.latitude).toFixed(3)}, {parseFloat(newPinData.longitude).toFixed(3)}</span>
                     </div>
 
                     <button type="submit" className="submit-btn">Dodaj Pinezkę</button>
                 </form>
             </div>}
+            <PinEditModal
+                pinData={newPinData}
+                availablePins={pins}
+                isOpen={isModalOpen}
+                pinToEdit={pinId}
+                onClose={() => setModalOpen(false)}
+                handleEditChange={handleChange}
+                token={localStorage.getItem("access_token")}
+                updatePins={(updatedPin) => setPins(pins.map(pin => pin.id === updatedPin.id ? updatedPin : pin))}
+                clearCurrentPin={() => setNewPinData({ pin_name: '', description: '', category: '', latitude: 0, longitude: 0, favourite: false })}
+                markRef={markersRef}
+                map={thisMap}
+                createMarker={addMarker}
+                deleteMarker={removeMarker}
+            />
         </div>
     );
 };
