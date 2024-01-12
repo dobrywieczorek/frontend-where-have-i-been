@@ -42,7 +42,7 @@ function Sidebar(){
                 {token != null ? 
                 <>
                 <NavLink className='navlink' title="Search Users" to="/usersearch"><img src={magnifyingGlassIcon}/></NavLink>
-                <NavLink className='navlink' title='Profile' to="/profile/myprofile"><img src={profileIcon} /></NavLink> 
+                <NavLink reloadDocument className='navlink' title='Profile' to="/profile/myprofile"><img src={profileIcon} /></NavLink> 
                 <button onClick={logout}>Logout</button>
                 </>
                 : <>
