@@ -22,172 +22,98 @@ function UserProfile(){
     const url = 'http://localhost:8000/api'
 
     const { token } = useContext(UserContext)
+    
+    var params = useParams()
+    console.log('params: '+params.profileId)
+    const [profileId, setProfileId] = useState(params.profileId)
 
-    let { profileId } = useParams()
-
-    const requestOptions = {
-        method: 'POST',
-        headers: {'Authorization':'Bearer ' + token},
-    };
-
-    //start of map component
     const [thisMap, setThisMap] = useState(null);
     const [mapInitialized, setMapInitialized] = useState(false);
     const [pins, setPins] = useState([]);
     const markersRef = useRef({});
-    const handlePinSelect = (pin) => {
-        if (thisMap) {
-            thisMap.flyTo([pin.latitude, pin.longitude], 15);
-        }
-    };
-
-    useEffect(() => {
-        if (!mapInitialized && !loading && userData) {
-            const map = L.map('mapContainer').setView([51.505, -0.09], 13);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap contributors',
-            }).addTo(map);
-
-            setThisMap(map);
-
-            fetchMapPins(map);
 
 
-            setMapInitialized(true);
-        }
-    }, [token, loading]);
-
-    const fetchMapPins = async (startedMap) => {
-        try {
-            const res = await fetch('http://localhost:8000/api/map-pins', {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            if (!res.ok) {
-                throw new Error(`HTTP error! Status: ${res.status}`);
-            }
-
-            const data = await res.json();
-            setPins(data.map_pins);
-            renderPins(data.map_pins, startedMap);
-        } catch (error) {
-            console.error('Error fetching pins', error);
-        }
-    };
-
-    const addMarker = (pin, map) => {
-        const customIcon = new L.Icon({
-            iconUrl,
-            iconRetinaUrl,
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowUrl,
-            shadowSize: [41, 41],
-        });
-
-        let favourite = pin.favourite ? "tak" : "nie";
-        const marker = L.marker([pin.latitude, pin.longitude], { icon: customIcon })
-            .addTo(map)
-            .bindPopup(`<b>Nazwa: ${pin.pin_name}</b><br>
-                Opis: ${pin.description}<br>
-                Kategoria: ${pin.category}<br>
-                Ulubiony: ${favourite}<br>
-                <button onclick="window.deletePin(${pin.id})">Usuń pinezkę</button>`);
-
-        markersRef.current[pin.id] = marker;
-    };
-
-    const renderPins = (fetchedPins, startedMap) => {
-        fetchedPins.forEach(pin => addMarker(pin, startedMap));
-    };
-    //end of map component
-    
-    useEffect(() => {
+        useEffect(() => {
+            console.log(profileId)
         if(token != null){
-            async function fetchMyData() {
-                fetch(`${url}/whoami`, 
-                {
-                    method: 'POST',
-                    headers: {'Authorization':'Bearer ' + token},
-                })
-                .then((response)=>{
-                    response.json().then((data)=>{
-                        console.log(data)
-                        
-                        if(profileId == data.id || profileId == 'myprofile' || profileId == null){
-                            console.log('ids match')
-                            setIDMatched(true);
-                            setUserData(data);
-                            setLoading(false);
-
-                            getUserStatistics(data.id);
-
-                        }else{
-                            fetchUserData()
-                        }
-                    })
-                })
-            };
-
-            async function getFriends(){
-                fetch(`${url}/getuserfriends`, {
-                    method: 'GET',
-                    headers: {'Authorization':'Bearer ' + token }
-                })
-                .then((response)=>{
-                    response.json().then((data)=>{
-                        console.log('Friends:')
-                        
-                        //setFriends(data.friends)
-
-                        setisFriend(checkIfFriends(data.friends, profileId))
-                    })
-                })
-            }
-
-            function getUserStatistics(id){
-                fetch(`${url}/getUserStats?user_id=${id}`, {
-                    method: 'GET'
-                }).then((response)=>{
-                    response.json().then((data)=>{
-                        console.log('user stats:')
-                        console.log(data);
-
-                        setUserStats(data);
-                    })
-                }).catch((err) => {
-                    console.log(err)
-                })
-            }
-
-            const fetchUserData = async () => {
-                fetch(`${url}/getuserbyid?id=${profileId}`, 
-                {
-                    method: 'GET'
-                })
-                    .then((response)=>{
-                    response.json().then((data)=>{
-                        if(!data.users.users){
-                            console.log('User not found!')
-                        }else{
-                            setUserData(data.users.users)
-                        }
-                        setLoading(false)
-                    }).catch((err)=>console.error(err))
-                })
-            }
 
             fetchMyData();
-            getFriends();
+            console.log('pid: '+profileId)
             //getUserStatistics();
-    }
-    }, [token, profileId])
 
+            if (!mapInitialized && !loading && userData) {
+                const map = L.map('mapContainer').setView([51.505, -0.09], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap contributors',
+                }).addTo(map);
+    
+                setThisMap(map);
+    
+                fetchMapPins(map, profileId);
+    
+    
+                setMapInitialized(true);
+            }
+
+    }
+    }, [token, profileId, loading])
+    async function fetchMyData() {
+        fetch(`${url}/whoami`, 
+        {
+            method: 'POST',
+            headers: {'Authorization':'Bearer ' + token},
+        })
+        .then((response)=>{
+            response.json().then((data)=>{
+                console.log(data)
+                
+                if(profileId == data.id || profileId == 'myprofile' || profileId == null){
+                    console.log('ids match')
+                    setIDMatched(true);
+                    setUserData(data);
+                    setLoading(false);
+                    setProfileId(data.id);
+                    getUserStatistics(data.id);
+
+                }else{
+                    fetchUserData()
+                }
+            })
+        })
+    };
+
+    function getUserStatistics(id){
+        fetch(`${url}/getUserStats?user_id=${id}`, {
+            method: 'GET'
+        }).then((response)=>{
+            response.json().then((data)=>{
+                console.log('user stats:')
+                console.log(data);
+
+                setUserStats(data);
+            })
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    const fetchUserData = async () => {
+        fetch(`${url}/getuserbyid?id=${profileId}`, 
+        {
+            method: 'GET'
+        })
+            .then((response)=>{
+            response.json().then((data)=>{
+                if(!data.users.users){
+                    console.log('User not found!')
+                }else{
+                    setUserData(data.users.users)
+                }
+                setLoading(false)
+            }).catch((err)=>console.error(err))
+        })
+    }
     function addFriend(){
         fetch(`${url}/addfriend/?friend_id=${profileId}`, {
             method: 'POST',
@@ -235,6 +161,62 @@ function UserProfile(){
         console.log('friend not found')
         return friendFound;
     }
+//map component
+
+const handlePinSelect = (pin) => {
+    if (thisMap) {
+        thisMap.flyTo([pin.latitude, pin.longitude], 15);
+    }
+};
+
+    const fetchMapPins = async (startedMap) => {
+        try {
+            const res = await fetch(`http://localhost:8000/api/map-pins/pins/${profileId}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!res.ok) {
+                throw new Error(`HTTP error! Status: ${res.status}`);
+            }
+
+            const data = await res.json();
+            setPins(data.map_pins);
+            renderPins(data.map_pins, startedMap);
+        } catch (error) {
+            console.error('Error fetching pins', error);
+        }
+    };
+
+    const addMarker = (pin, map) => {
+        const customIcon = new L.Icon({
+            iconUrl,
+            iconRetinaUrl,
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowUrl,
+            shadowSize: [41, 41],
+        });
+
+        let favourite = pin.favourite ? "tak" : "nie";
+        const marker = L.marker([pin.latitude, pin.longitude], { icon: customIcon })
+            .addTo(map)
+            .bindPopup(`<b>Nazwa: ${pin.pin_name}</b><br>
+                Opis: ${pin.description}<br>
+                Kategoria: ${pin.category}<br>
+                Ulubiony: ${favourite}<br>
+                `);
+
+        markersRef.current[pin.id] = marker;
+    };
+
+    const renderPins = (fetchedPins, startedMap) => {
+        fetchedPins.forEach(pin => addMarker(pin, startedMap));
+    };
+    //end of map component
 
     return (
         !loading ? 
@@ -262,7 +244,7 @@ function UserProfile(){
                 </div>
                 <div className='bottomContainer'>
                     <div className="nameHolder">
-                        <h1 className="profile-name text-3xl font-bold">{userData && userData.name}</h1>
+                        <h1 className="profile-name text-3xl font-bold">{userData.name}</h1>
                         { (!idMatched && !isFriend) &&
                         <button id='addFriend-btn' className="btn" role="button" onClick={addFriend}><span className="text">Add Friend</span></button>
                         }
@@ -270,8 +252,8 @@ function UserProfile(){
                         <button id='deleteFriend-btn' className='btn' role='button' onClick={deleteFriend}><span className="text">Remove Friend</span></button>
                         }
                     </div>
-                    <span className="profile-date">Joined: {userData && new Date(userData.created_at).toLocaleDateString()}</span>
-                    <p className="profile-description">{userData && userData.description}</p>
+                    <span className="profile-date">Joined: {new Date(userData.created_at).toLocaleDateString()}</span>
+                    <p className="profile-description">{userData.description}</p>
 
                     { userStats ? 
                     <div className='userStats'>
