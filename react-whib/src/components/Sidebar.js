@@ -6,6 +6,7 @@ import mapIcon from '../img/map-128.png';
 import profileIcon from '../img/profile-128.png';
 import magnifyingGlassIcon from '../img/magnifying_glass.svg'
 import cogIcon from '../img/cog.svg'
+import friendsIcon from '../img/friends.svg'
 import { UserContext } from '../contexts/AuthContext';
 
 function Sidebar(){
@@ -44,7 +45,8 @@ function Sidebar(){
                 <>
                 <NavLink className='navlink' title="Search Users" to="/usersearch"><img src={magnifyingGlassIcon}/></NavLink>
                 <NavLink reloadDocument className='navlink' title='Profile' to="/profile/myprofile"><img src={profileIcon} /></NavLink> 
-                <NavLink className='navlink' to='/settings'><img className='settings-icon' src={cogIcon} alt="settings cog wheel"/></NavLink>
+                <NavLink className='navlink' to='/settings' title='Profile Settings'><img className='settings-icon' src={cogIcon} alt="settings icon"/></NavLink>
+                <NavLink className='navlink' to='/friends' title='Friends'><img className='friends-icon' src={friendsIcon} alt="friends icon"/></NavLink>
                 <button onClick={logout}>Logout</button>
                 </>
                 : <>

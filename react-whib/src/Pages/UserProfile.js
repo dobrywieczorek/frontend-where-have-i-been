@@ -15,7 +15,7 @@ function UserProfile(){
     const [userData, setUserData] = useState();
     const [idMatched, setIDMatched] = useState(false);
     //const [friends, setFriends] = useState(null);
-    const [isFriend, setisFriend] = useState(true);
+    const [isFriend, setisFriend] = useState(null);
     const [loading, setLoading] = useState(true);
     const [userStats, setUserStats] = useState();
 
@@ -116,6 +116,7 @@ function UserProfile(){
             }).catch((err)=>console.error(err))
         })
     }
+    
     function addFriend(){
         fetch(`${url}/addfriend/?friend_id=${profileId}`, {
             method: 'POST',
