@@ -208,7 +208,7 @@ const handlePinSelect = (pin) => {
 
     return (
         !loading ? 
-            userData ? <div key={profileId} className="UserProfile">
+            userData ? <div className="UserProfile">
                 
                 <div className="topContainer">
                     <div className="profile-bg"></div>
