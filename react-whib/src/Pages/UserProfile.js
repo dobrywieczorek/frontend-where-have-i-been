@@ -24,7 +24,6 @@ function UserProfile(){
     const { token } = useContext(UserContext)
     
     var params = useParams()
-    console.log('params: '+params.profileId)
     const [profileId, setProfileId] = useState(params.profileId)
 
     const [thisMap, setThisMap] = useState(null);
@@ -34,11 +33,10 @@ function UserProfile(){
 
 
         useEffect(() => {
-            console.log(profileId)
         if(token != null){
 
             fetchMyData();
-            console.log('pid: '+profileId)
+            
             //getUserStatistics();
 
             if (!mapInitialized && !loading && userData) {
@@ -66,10 +64,10 @@ function UserProfile(){
         })
         .then((response)=>{
             response.json().then((data)=>{
-                console.log(data)
+                
                 
                 if(profileId == data.id || profileId == 'myprofile' || profileId == null){
-                    console.log('ids match')
+                    
                     setIDMatched(true);
                     setUserData(data);
                     setLoading(false);
@@ -77,8 +75,9 @@ function UserProfile(){
                     getUserStatistics(data.id);
 
                 }else{
-                    fetchUserData()
+                    fetchUserData();
                     getUserStatistics(data.id);
+                    checkFriendship();
                 }
             })
         })
@@ -89,9 +88,6 @@ function UserProfile(){
             method: 'GET'
         }).then((response)=>{
             response.json().then((data)=>{
-                console.log('user stats:')
-                console.log(data);
-
                 setUserStats(data);
             })
         }).catch((err) => {
@@ -106,7 +102,6 @@ function UserProfile(){
         })
             .then((response)=>{
             response.json().then((data)=>{
-                console.log(data)
                 if(!data.users.users){
                     console.log('User not found!')
                 }else{
@@ -117,6 +112,26 @@ function UserProfile(){
         })
     }
     
+    function checkFriendship(){
+        fetch(`${url}/getuserfriends`, {
+            method: 'GET',
+            headers:
+            {
+                'Authorization':'Bearer ' + token
+            }
+        }).then((response)=>{
+            
+            response.json().then((data=>{
+                var isFriends = data.friends.find(({friend_with_user_id})=>friend_with_user_id == profileId)
+                if(!isFriends){
+                    setisFriend(false)
+                }else{
+                    setisFriend(true)
+                }
+                console.log(isFriends)
+            }))
+        })
+    }
     function addFriend(){
         fetch(`${url}/addfriend/?friend_id=${profileId}`, {
             method: 'POST',
@@ -126,8 +141,6 @@ function UserProfile(){
             },
         }).then((response)=>{
             response.json().then((data)=>{
-                console.log('Friend added:')
-                console.log(data)
                 setisFriend(true);
             }).catch((err)=>console.log(err))
         })
@@ -142,8 +155,6 @@ function UserProfile(){
             },
         }).then((response)=>{
             response.json().then((data)=>{
-                console.log('Friend removed:')
-                console.log(data)
                 setisFriend(false);
             }).catch((err)=>console.log(err))
         })
@@ -222,7 +233,7 @@ const handlePinSelect = (pin) => {
                 <div className='bottomContainer'>
                     <div className="nameHolder">
                         <h1 className="profile-name text-3xl font-bold">{userData.name}</h1>
-                        { (!idMatched && !isFriend) &&
+                        { (!idMatched && !isFriend ) &&
                         <button id='addFriend-btn' className="btn" role="button" onClick={addFriend}><span className="text">Add Friend</span></button>
                         }
                         { (!idMatched && isFriend) &&
