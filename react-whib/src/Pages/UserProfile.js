@@ -2,7 +2,7 @@ import { useContext, useEffect, useState, useRef } from 'react';
 import '../css/UserProfile.css';
 import cog from '../img/cog.svg';
 import { UserContext } from '../contexts/AuthContext';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import L from 'leaflet';
 import MapSearchControl from './MapSearchControl';
@@ -148,21 +148,6 @@ function UserProfile(){
         })
     }
 
-    function checkIfFriends(friendList, id){
-
-        let friendFound = false;
-
-        friendList.forEach(friend => {
-            if(friend.friend_with_user_id == id){
-                console.log('found friend')
-                friendFound = true;
-                return;
-            }
-            
-        }); 
-        console.log('friend not found')
-        return friendFound;
-    }
 //map component
 
 const handlePinSelect = (pin) => {
