@@ -78,6 +78,7 @@ function UserProfile(){
 
                 }else{
                     fetchUserData()
+                    getUserStatistics(data.id);
                 }
             })
         })
@@ -105,6 +106,7 @@ function UserProfile(){
         })
             .then((response)=>{
             response.json().then((data)=>{
+                console.log(data)
                 if(!data.users.users){
                     console.log('User not found!')
                 }else{
@@ -220,7 +222,7 @@ const handlePinSelect = (pin) => {
 
     return (
         !loading ? 
-            userData ? <div className="UserProfile">
+            userData ? <div key={profileId} className="UserProfile">
                 {idMatched &&
                 <div className='settings-dropdown'>
                     <img className='settings-icon' src={cog} alt="settings cog wheel"/>
