@@ -54,7 +54,7 @@ const router = createBrowserRouter(
       <Route path='/register' element={<RegisterPanel />}> </Route>
       <Route path='/usersearch' element={<UserSearchPanel />}></Route>
       <Route path='/map' element={<MapView />}> </Route>
-      <Route path='/edit' element={<EditUser/>}> </Route>
+      <Route path='/settings' element={<EditUser/>}> </Route>
       <Route path='/friends' element={<FriendList />}/>
       <Route path="/auth/google" element={<GoogleCallback />}></Route>
     </Route>
