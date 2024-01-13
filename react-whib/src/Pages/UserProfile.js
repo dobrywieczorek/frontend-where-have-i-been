@@ -208,17 +208,6 @@ const handlePinSelect = (pin) => {
     return (
         !loading ? 
             userData ? <div key={profileId} className="UserProfile">
-                {idMatched &&
-                <div className='settings-dropdown'>
-                    <img className='settings-icon' src={cog} alt="settings cog wheel"/>
-                        <ul className='settings-menu'>
-                            <li>Change name</li>
-                            <li>Change description</li>
-                            <li>Change email</li>
-                            <li>Change password</li>
-                        </ul>
-                </div>
-                }
                 
                 <div className="topContainer">
                     <div className="profile-bg"></div>
