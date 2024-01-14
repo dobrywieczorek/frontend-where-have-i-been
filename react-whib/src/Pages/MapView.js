@@ -30,21 +30,6 @@ const MapView = () => {
     const handleShowTutorial = () => {
         setIsTutorialVisible(true);
     };
-
-    //Checking if the tutorial has already been seen 
-    useEffect(() => {
-        const token = localStorage.getItem("access_token");
-        if (!token) {
-            //console.log("Brak access_token. Samouczek nie wyswietla sie.");
-            return;
-        }
-        //console.log("Wyswietlenie samouczka");
-        const tutorialShown = document.cookie.split(';').some((item) => item.trim().startsWith('tutorialShown='));
-        if (!tutorialShown) {
-            setIsTutorialVisible(true);
-            document.cookie = "tutorialShown=true; path=/";
-        }
-    }, []);
     const [isModalOpen, setModalOpen] = useState(false);
     const [newPinData, setNewPinData] = useState({
         pin_name: '',
@@ -92,6 +77,21 @@ const MapView = () => {
             setMapInitialized(true);
         }
     }, [token]);
+
+    //Checking if the tutorial has already been seen 
+    useEffect(() => {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+            //console.log("Brak access_token. Samouczek nie wyswietla sie.");
+            return;
+        }
+        //console.log("Wyswietlenie samouczka");
+        const tutorialShown = document.cookie.split(';').some((item) => item.trim().startsWith('tutorialShown='));
+        if (!tutorialShown) {
+            setIsTutorialVisible(true);
+            document.cookie = "tutorialShown=true; path=/";
+        }
+    }, []);
 
     const fetchMapPins = async (startedMap) => {
         try {
