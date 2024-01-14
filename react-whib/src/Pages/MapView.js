@@ -246,7 +246,7 @@ const MapView = () => {
             {thisMap && <MapSearchControl map={thisMap} pins={pins} onPinSelect={handlePinSelect} />}
             {isFormOpen && <div className="w-full absolute bottom-0 z-[1000] pin-form p-3 grid content-center">
                 <div className="flex flex-col items-center">
-                    <div className="my-2.5 w-1/5">
+                    <div className="my-1 w-1/5">
                         <h3 className="text-xl font-bold mt-1.5 ml-3 float-left">Dodawanie pinezki</h3>
                         <span className="text-zinc-400 mr-3 float-right text-3xl font-bold hover:text-black hover:cursor-pointer" onClick={() => {setFormOpen(false)}}>&times;</span>
                     </div>
