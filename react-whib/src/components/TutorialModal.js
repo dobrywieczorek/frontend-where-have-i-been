@@ -54,24 +54,37 @@ const TutorialModal = ({ isVisible, setIsVisible }) => {
     };
 
     return (
-        <div className="modal">
-            <div className="modal-content">
-                <span className="close" onClick={() => setIsVisible(false) & setStep(0)}>&times;</span>
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center z-[1000]">
+            <div className="relative p-5 bg-white shadow-lg rounded-md text-gray-700 max-w-xl mx-auto">
+                <span className="absolute top-0 right-0 p-4" onClick={() => setIsVisible(false) & setStep(0)}>
+                    <svg className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </span>
                 
-                <div className="centered-content">
+                <div className="flex flex-col items-center p-5">
                     <p>{tutorialSteps[step].text}</p>
                 </div>
-                <div className="button-container">
-                        {step > 0 && <button onClick={prevStep}>Poprzedni</button>}
-                        {step < tutorialSteps.length - 1 ? (
-                            <button className="next-button" onClick={nextStep}>Następny</button>
-                        ) : (
-                            <button onClick={() => setIsVisible(false) & setStep(0)}>Zakończ</button>
-                        )}
+                <div className="flex justify-between items-center mt-5">
+                    {step > 0 && 
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={prevStep}>
+                            Poprzedni
+                        </button>}
+                    {step < tutorialSteps.length - 1 ? (
+                        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={nextStep}>
+                            Następny
+                        </button>
+                    ) : (
+                        <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() =>
+                        setIsVisible(false) & setStep(0)}>
+                        Zakończ
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
     );
+    
 };
 
 export default TutorialModal;
