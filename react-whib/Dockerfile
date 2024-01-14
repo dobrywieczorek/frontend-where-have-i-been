@@ -1,11 +1,14 @@
-FROM node:latest
+# Użyj oficjalnego obrazu Node jako bazowego obrazu
+FROM node:14-alpine
 
+# Ustaw bieżący katalog roboczy w kontenerze
 WORKDIR /app
 
-COPY . /app
+# Skopiuj pliki projektu do katalogu roboczego w kontenerze
+COPY . .
 
+# Zainstaluj zależności
 RUN npm install
 
-RUN npm run build
-
+# Uruchom aplikację React
 CMD ["npm", "start"]
