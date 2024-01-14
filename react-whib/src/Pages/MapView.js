@@ -202,7 +202,7 @@ const MapView = () => {
 
             setPins(pins.filter(pin => pin.id !== pinId));
             removeMarker(pinId);
-            toast("Pinezka została usunięta!");
+            toast.success("Pinezka została usunięta!");
         } catch (error) {
             console.error('Error deleting pin', error);
         }
@@ -232,7 +232,7 @@ const MapView = () => {
             const pinToAdd = json.map_pin;
             setPins([...pins, pinToAdd]);
             addMarker(pinToAdd, thisMap);
-            toast("Pinezka została dodana!");
+            toast.success("Pinezka została dodana!");
             setFormOpen(false);
         } catch (error) {
             console.error('Error adding pin', error);
@@ -241,7 +241,7 @@ const MapView = () => {
 
     return (
         <div className="relative">
-            <ToastContainer hideProgressBar theme="colored" />
+            <ToastContainer position="bottom-right" closeOnClick hideProgressBar theme="colored" />
             <div id="mapContainer" className="w-full h-full"></div>
             {thisMap && <MapSearchControl map={thisMap} pins={pins} onPinSelect={handlePinSelect} />}
             {isFormOpen && <div className="w-full absolute bottom-0 z-[1000] pin-form p-3 grid content-center">

@@ -50,7 +50,7 @@ const PinEditModal = ({ pinData, isOpen, isFormFilled, setFilled, onClose, handl
         } catch (error) {
             console.error('Error editing pin', error);
         }
-        toast("Pinezka została edytowana!");
+        toast.success("Pinezka została edytowana!");
     }
 
     if (!isOpen) return null;
