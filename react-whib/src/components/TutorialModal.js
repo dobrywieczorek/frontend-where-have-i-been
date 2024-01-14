@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-//import '../css/TutorialModal.css';
+import L from 'leaflet';
 import tutorialImage1 from '../img/home-128.png'
 
 
@@ -41,6 +41,7 @@ const TutorialModal = ({ isVisible, setIsVisible }) => {
         }
     ];
 
+
     const nextStep = () => {
         if (step < tutorialSteps.length - 1) {
             setStep(step + 1);
@@ -64,10 +65,13 @@ const TutorialModal = ({ isVisible, setIsVisible }) => {
                 
                 <div className="flex flex-col items-center p-5">
                     <p>{tutorialSteps[step].text}</p>
+                    {tutorialSteps[step].image && (
+                        <img src={tutorialSteps[step].image} alt="Tutorial Step" className="max-w-full h-auto mt-4" />
+                    )}
                 </div>
-                <div className="flex justify-between items-center mt-5">
+                <div className="flex justify-end items-center mt-5">
                     {step > 0 && 
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={prevStep}>
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={prevStep}>
                             Poprzedni
                         </button>}
                     {step < tutorialSteps.length - 1 ? (
@@ -75,9 +79,8 @@ const TutorialModal = ({ isVisible, setIsVisible }) => {
                             Następny
                         </button>
                     ) : (
-                        <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() =>
-                        setIsVisible(false) & setStep(0)}>
-                        Zakończ
+                        <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => setIsVisible(false) & setStep(0)}>
+                            Zakończ
                         </button>
                     )}
                 </div>
