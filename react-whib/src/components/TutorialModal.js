@@ -12,28 +12,32 @@ const TutorialModal = ({ isVisible, setIsVisible }) => {
 
     const tutorialSteps = [
         {
-            text: "Wprowadzenie: Witamy w samouczku mapy!",
-            image: tutorialImage1
+            text: "Witamy w samouczku mapy!",
+            //image: tutorialImage1
         },
         {
-            text: "Przewodnik po interfejsie: Poznaj przyciski zoom, pasek wyszukiwania i inne narzędzia.",
-            image: tutorialImage1
+            text: "Porusznie się po mapie: Aby poruszać się po mapie przytrzymaj lewy przycisk myszy i przesuń mapę. Użyj przycisków + i - znajdujących się po górnej lewej stronie mapy aby przybliżyć i oddalić widok. Alternatywnie możesz użyć scroola na myszce.",
+            //image: tutorialImage2
         },
         {
-            text: "Dodawanie pinezki: Kliknij na mapie i wypełnij formularz, aby dodać pinezkę.",
-            image: tutorialImage1
+            text: "Szukanie pinezek: Pod przyciskami do zmiany przybliżenia mapy znajduje się pole wyszukiania pinezek. Możesz wpisać do niego nazwę bądź kategorie pinezki aby je wyszukać. Kliknij w znalezioną pinezkę aby się do niej przenieść.",
+            //image: tutorialImage3
         },
         {
-            text: "Wyszukiwanie i nawigacja: Użyj paska wyszukiwania, by znaleźć pinezkę.",
-            image: tutorialImage1
+            text: "Dodanie pinezki: Aby dodać pinezkę należy kliknąć wybrane miejsce na mapie i następnie wypełnić formularz.",
+            //image: tutorialImage4
+        },
+        {
+            text: "Edytowanie pinezki: Do edycji pinezki wystarczy tylko ją kliknąć, następnie wybrać edytuj i wypełnić formularz nowymi danymi.",
+            //image: tutorialImage5
         },
         {
             text: "Usunięcie pinezki: Kliknij pinezkę, a następnie 'Usuń', aby ją usunąć.",
-            image: tutorialImage1
+            //image: tutorialImage6
         },
         {
             text: "Zakończenie samouczka: Dziękujemy za korzystanie z naszej strony!",
-            image: tutorialImage1
+            //image: tutorialImage7
         }
     ];
 
@@ -54,7 +58,6 @@ const TutorialModal = ({ isVisible, setIsVisible }) => {
             <div className="modal-content">
                 <span className="close" onClick={() => setIsVisible(false) & setStep(0)}>&times;</span>
                 <p>{tutorialSteps[step].text}</p>
-                <img src={tutorialSteps[step].image} alt={`Step ${step + 1}`} />
                 <div>
                     {step > 0 && <button onClick={prevStep}>Poprzedni</button>}
                     {step < tutorialSteps.length - 1 ? (
