@@ -37,7 +37,7 @@ function UserProfile(){
 
             fetchMyData();
             
-            //getUserStatistics();
+            getUserStatistics();
 
             if (!mapInitialized && !loading && userData) {
                 const map = L.map('mapContainer').setView([51.505, -0.09], 13);
@@ -69,11 +69,9 @@ function UserProfile(){
                     setUserData(data);
                     setLoading(false);
                     setProfileId(data.id);
-                    getUserStatistics();
 
                 }else{
                     fetchUserData();
-                    getUserStatistics();
                     checkFriendship();
                 }
             })
