@@ -4,6 +4,10 @@ import 'react-toastify/dist/ReactToastify.css';
 const PinEditModal = ({ pinData, isOpen, isFormFilled, setFilled, onClose, handleEditChange, token, updatePins, clearCurrentPin, map, createMarker, deleteMarker, fillingForm }) => {
     const handleEditSubmit = (e) => {
         e.preventDefault();
+        if(!pinData.pin_name || !pinData.description) {
+            toast.error("Pole nazwy lub opisu jest puste!");
+            return ;
+        }
         editPin(pinData);
         clearCurrentPin();
     };

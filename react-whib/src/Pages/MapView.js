@@ -147,6 +147,10 @@ const MapView = () => {
 
     const handleAddSubmit = (e) => {
         e.preventDefault();
+        if(!newPinData.pin_name || !newPinData.description) {
+            toast.error("Nie podano nazwy lub opisu!");
+            return ;
+        }
         addPin();
         setNewPinData({ pin_name: '', description: '', category: '', latitude: 0, longitude: 0, favourite: false });
     };
@@ -198,7 +202,7 @@ const MapView = () => {
 
             setPins(pins.filter(pin => pin.id !== pinId));
             removeMarker(pinId);
-            toast("Pinezka została usunięta!");
+            toast.error("Pinezka została usunięta!");
         } catch (error) {
             console.error('Error deleting pin', error);
         }
