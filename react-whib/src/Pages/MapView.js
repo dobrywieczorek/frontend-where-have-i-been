@@ -26,6 +26,7 @@ const MapView = () => {
     };
     const [isModalOpen, setModalOpen] = useState(false);
     const [isFilled, setIsFilled] = useState(false);
+    const [isFormOpen, setFormOpen] = useState(false);
     const [newPinData, setNewPinData] = useState({
         pin_name: '',
         description: '',
@@ -66,6 +67,7 @@ const MapView = () => {
                         latitude: lat,
                         longitude: lng
                     }));
+                    setFormOpen(true);
                 });
             }
             setMapInitialized(true);
@@ -227,12 +229,15 @@ const MapView = () => {
     };
 
     return (
-        <div>
+        <div className="relative">
             <div id="mapContainer" className="w-full h-full"></div>
             {thisMap && <MapSearchControl map={thisMap} pins={pins} onPinSelect={handlePinSelect} />}
-            {newPinData.latitude !== 0 && <div className="pin-form p-3 grid content-center">
+            {isFormOpen && <div className="w-full absolute bottom-0 z-[1000] pin-form p-3 grid content-center">
                 <div className="flex flex-col items-center">
-                    <h1 className="text-xl font-bold mt-2 mb-2" >Dodawanie pinezki</h1>
+                    <div className="my-2.5 w-1/5">
+                        <h3 className="text-xl font-bold mt-1.5 ml-3 float-left">Dodawanie pinezki</h3>
+                        <span className="text-zinc-400 mr-3 float-right text-3xl font-bold hover:text-black hover:cursor-pointer" onClick={() => {setFormOpen(false)}}>&times;</span>
+                    </div>
                     <form onSubmit={handleAddSubmit} className="sm:w-1/3 md:w-1/3 lg:w-1/4 xl:w-1/4 flex flex-col items-center">
                         <input type="text" name="pin_name" className="w-3/4 my-2.5 p-2.5"
                         value={newPinData.pin_name} onChange={handleChange} placeholder="Nazwa" />
