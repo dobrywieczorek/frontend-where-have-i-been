@@ -3,8 +3,8 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './styles.css';
 import '../css/SearchControl.css'
-import MapSearchControl from './MapSearchControl';
-import TutorialModal from './TutorialModal';
+import MapSearchControl from '../components/MapSearchControl';
+import TutorialModal from '../components/TutorialModal';
 
 import iconUrl from '../../node_modules/leaflet/dist/images/marker-icon.png';
 import iconRetinaUrl from '../../node_modules/leaflet/dist/images/marker-icon-2x.png';

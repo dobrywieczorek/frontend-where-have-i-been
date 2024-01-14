@@ -5,7 +5,7 @@ import { UserContext } from '../contexts/AuthContext';
 import { useParams } from 'react-router-dom';
 
 import L from 'leaflet';
-import MapSearchControl from './MapSearchControl';
+import MapSearchControl from '../components/MapSearchControl';
 import iconUrl from '../../node_modules/leaflet/dist/images/marker-icon.png';
 import iconRetinaUrl from '../../node_modules/leaflet/dist/images/marker-icon-2x.png';
 import shadowUrl from '../../node_modules/leaflet/dist/images/marker-shadow.png';
