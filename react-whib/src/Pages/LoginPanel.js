@@ -29,6 +29,24 @@ export default function LoginPanel() {
             .catch((error) => console.error(error));
     }, []);
 
+	const [facebookLoginUrl, setFacebookLoginUrl] = useState(null);
+	useEffect(() => {
+        fetch('http://localhost:8000/api/authFacebook', {
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Something went wrong!' + JSON.stringify(response));
+            })
+            .then((data) => setFacebookLoginUrl( data.url ))
+            .catch((error) => console.error(error));
+    }, []);
+
 	const {token, setToken} = useContext(UserContext); 
 
 	async function Login(event) {
@@ -113,7 +131,11 @@ export default function LoginPanel() {
 					<p className="mt-3">Nie masz jeszcze konta? <Link className="text-blue-400 hover:text-blue-700" to="/register">Zarejestruj się</Link></p>
 
 					{loginUrl != null && (
-						<a href={loginUrl} class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-2">Google Sign In</a>
+						<a href={loginUrl} class="text-white bg-red-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-2">Google Sign In</a>
+					)}
+
+					{facebookLoginUrl != null && (
+						<a href={facebookLoginUrl} class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-2">Facebook Sign In</a>
 					)}
 					
 				</div>

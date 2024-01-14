@@ -1,6 +1,5 @@
 import './css/App.css';
-import './components/UserProfile';
-import UserProfile from './components/UserProfile';
+import UserProfile from './Pages/UserProfile';
 import Sidebar from './components/Sidebar';
 import Test from './components/Test';
 import EditUser from './components/EditUser';
@@ -27,7 +26,7 @@ import PrivateRoutes from './components/PrivateRoutes';
 import { GoogleLogin } from '@react-oauth/google';
 
 import GoogleCallback from "./GoogleCallback";
-
+import FacebookCallback from "./FacebookCallback";
 
 const Root = () => {
   return (
@@ -55,9 +54,10 @@ const router = createBrowserRouter(
       <Route path='/register' element={<RegisterPanel />}> </Route>
       <Route path='/usersearch' element={<UserSearchPanel />}></Route>
       <Route path='/map' element={<MapView />}> </Route>
-      <Route path='/edit' element={<EditUser/>}> </Route>
+      <Route path='/settings' element={<EditUser/>}> </Route>
       <Route path='/friends' element={<FriendList />}/>
       <Route path="/auth/google" element={<GoogleCallback />}></Route>
+      <Route path="/auth/facebook" element={<FacebookCallback />}></Route>
     </Route>
   )
 )
