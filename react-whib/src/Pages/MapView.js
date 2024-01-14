@@ -31,6 +31,7 @@ const MapView = () => {
             }).addTo(map);
 
             setThisMap(map);
+            map.zoomControl.setPosition('topright');
 
             fetchMapPins(map);
 
