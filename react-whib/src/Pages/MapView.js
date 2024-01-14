@@ -253,6 +253,7 @@ const MapView = () => {
     return (
         <div>
             <div id="mapContainer" className="w-full h-full"></div>
+            <TutorialModal isVisible={isTutorialVisible} setIsVisible={setIsTutorialVisible} />
             {thisMap && <MapSearchControl map={thisMap} pins={pins} onPinSelect={handlePinSelect} />}
             {newPinData.latitude !== 0 && <div className="pin-form p-3 grid content-center">
                 <div className="flex flex-col items-center">
