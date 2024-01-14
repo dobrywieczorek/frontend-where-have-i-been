@@ -8,6 +8,9 @@ import MapSearchControl from './MapSearchControl';
 
 import PinEditModal from '../components/PinEditModal';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import iconUrl from '../../node_modules/leaflet/dist/images/marker-icon.png';
 import iconRetinaUrl from '../../node_modules/leaflet/dist/images/marker-icon-2x.png';
 import shadowUrl from '../../node_modules/leaflet/dist/images/marker-shadow.png';
@@ -195,6 +198,7 @@ const MapView = () => {
 
             setPins(pins.filter(pin => pin.id !== pinId));
             removeMarker(pinId);
+            toast("Pinezka została usunięta!");
         } catch (error) {
             console.error('Error deleting pin', error);
         }
@@ -224,6 +228,7 @@ const MapView = () => {
             const pinToAdd = json.map_pin;
             setPins([...pins, pinToAdd]);
             addMarker(pinToAdd, thisMap);
+            toast("Pinezka została dodana!");
         } catch (error) {
             console.error('Error adding pin', error);
         }
@@ -231,6 +236,7 @@ const MapView = () => {
 
     return (
         <div className="relative">
+            <ToastContainer hideProgressBar theme="colored" />
             <div id="mapContainer" className="w-full h-full"></div>
             {thisMap && <MapSearchControl map={thisMap} pins={pins} onPinSelect={handlePinSelect} />}
             {isFormOpen && <div className="w-full absolute bottom-0 z-[1000] pin-form p-3 grid content-center">

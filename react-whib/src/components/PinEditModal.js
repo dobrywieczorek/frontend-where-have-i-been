@@ -1,3 +1,6 @@
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const PinEditModal = ({ pinData, isOpen, isFormFilled, setFilled, onClose, handleEditChange, token, updatePins, clearCurrentPin, map, createMarker, deleteMarker, fillingForm }) => {
     const handleEditSubmit = (e) => {
         e.preventDefault();
@@ -43,6 +46,7 @@ const PinEditModal = ({ pinData, isOpen, isFormFilled, setFilled, onClose, handl
         } catch (error) {
             console.error('Error editing pin', error);
         }
+        toast("Pinezka została edytowana!");
     }
 
     if (!isOpen) return null;
