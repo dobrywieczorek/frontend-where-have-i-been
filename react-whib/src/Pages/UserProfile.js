@@ -64,27 +64,24 @@ function UserProfile(){
         })
         .then((response)=>{
             response.json().then((data)=>{
-                
-                
                 if(profileId == data.id || profileId == 'myprofile' || profileId == null){
-                    
                     setIDMatched(true);
                     setUserData(data);
                     setLoading(false);
                     setProfileId(data.id);
-                    getUserStatistics(data.id);
+                    getUserStatistics();
 
                 }else{
                     fetchUserData();
-                    getUserStatistics(data.id);
+                    getUserStatistics();
                     checkFriendship();
                 }
             })
         })
     };
 
-    function getUserStatistics(id){
-        fetch(`${url}/getUserStats?user_id=${id}`, {
+    function getUserStatistics(){
+        fetch(`${url}/getUserStats?user_id=${profileId}`, {
             method: 'GET'
         }).then((response)=>{
             response.json().then((data)=>{
@@ -128,7 +125,6 @@ function UserProfile(){
                 }else{
                     setisFriend(true)
                 }
-                console.log(isFriends)
             }))
         })
     }
