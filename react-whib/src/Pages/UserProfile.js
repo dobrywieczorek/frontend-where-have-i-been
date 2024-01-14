@@ -37,7 +37,7 @@ function UserProfile(){
 
             fetchMyData();
             
-            //getUserStatistics();
+            getUserStatistics();
 
             if (!mapInitialized && !loading && userData) {
                 const map = L.map('mapContainer').setView([51.505, -0.09], 13);
@@ -64,27 +64,22 @@ function UserProfile(){
         })
         .then((response)=>{
             response.json().then((data)=>{
-                
-                
                 if(profileId == data.id || profileId == 'myprofile' || profileId == null){
-                    
                     setIDMatched(true);
                     setUserData(data);
                     setLoading(false);
                     setProfileId(data.id);
-                    getUserStatistics(data.id);
 
                 }else{
                     fetchUserData();
-                    getUserStatistics(data.id);
                     checkFriendship();
                 }
             })
         })
     };
 
-    function getUserStatistics(id){
-        fetch(`${url}/getUserStats?user_id=${id}`, {
+    function getUserStatistics(){
+        fetch(`${url}/getUserStats?user_id=${profileId}`, {
             method: 'GET'
         }).then((response)=>{
             response.json().then((data)=>{
@@ -128,7 +123,6 @@ function UserProfile(){
                 }else{
                     setisFriend(true)
                 }
-                console.log(isFriends)
             }))
         })
     }
