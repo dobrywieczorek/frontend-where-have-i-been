@@ -45,7 +45,7 @@ const PinEditModal = ({ pinData, isOpen, isFormFilled, setFilled, onClose, handl
             createMarker(updatedPin, map);
             updatePins(updatedPin.map_pin);
             
-            isOpen = false;
+            onClose();
             setFilled(false);
         } catch (error) {
             console.error('Error editing pin', error);

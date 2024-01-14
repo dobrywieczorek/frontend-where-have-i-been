@@ -202,7 +202,7 @@ const MapView = () => {
 
             setPins(pins.filter(pin => pin.id !== pinId));
             removeMarker(pinId);
-            toast.error("Pinezka została usunięta!");
+            toast("Pinezka została usunięta!");
         } catch (error) {
             console.error('Error deleting pin', error);
         }
@@ -233,6 +233,7 @@ const MapView = () => {
             setPins([...pins, pinToAdd]);
             addMarker(pinToAdd, thisMap);
             toast("Pinezka została dodana!");
+            setFormOpen(false);
         } catch (error) {
             console.error('Error adding pin', error);
         }
