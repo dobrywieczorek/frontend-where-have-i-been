@@ -74,8 +74,8 @@ function UserProfile(){
                     fetchUserData();
                     checkFriendship();
                 }
-            })
-        })
+            }).catch((error)=>{console.log(error)})
+        }).catch((error)=>{console.log(error)})
     };
 
     function getUserStatistics(){
@@ -84,10 +84,8 @@ function UserProfile(){
         }).then((response)=>{
             response.json().then((data)=>{
                 setUserStats(data);
-            })
-        }).catch((err) => {
-            console.log(err)
-        })
+            }).catch((err) => {console.log(err)})
+        }).catch((err) => {console.log(err)})
     }
 
     const fetchUserData = async () => {
@@ -104,7 +102,7 @@ function UserProfile(){
                 }
                 setLoading(false)
             }).catch((err)=>console.error(err))
-        })
+        }).catch((err) => {console.log(err)})
     }
     
     function checkFriendship(){
@@ -123,8 +121,8 @@ function UserProfile(){
                 }else{
                     setisFriend(true)
                 }
-            }))
-        })
+            })).catch((err) => {console.log(err)})
+        }).catch((err) => {console.log(err)})
     }
     function addFriend(){
         fetch(`${url}/addfriend/?friend_id=${profileId}`, {
@@ -137,7 +135,7 @@ function UserProfile(){
             response.json().then((data)=>{
                 setisFriend(true);
             }).catch((err)=>console.log(err))
-        })
+        }).catch((err) => {console.log(err)})
     }
 
     function deleteFriend(){
@@ -151,7 +149,7 @@ function UserProfile(){
             response.json().then((data)=>{
                 setisFriend(false);
             }).catch((err)=>console.log(err))
-        })
+        }).catch((err) => {console.log(err)})
     }
 
 //map component
