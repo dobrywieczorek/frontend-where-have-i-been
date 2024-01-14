@@ -50,6 +50,7 @@ const MapView = () => {
         category: '',
     });
     const [isFilled, setIsFilled] = useState(false);
+    const tutorialButton = document.createElement('button');
 
     useEffect(() => {
         if (!mapInitialized) {
@@ -58,6 +59,23 @@ const MapView = () => {
                 maxZoom: 19,
                 attribution: '© OpenStreetMap contributors',
             }).addTo(map);
+
+            const TutorialControl = L.Control.extend({
+                onAdd: function() {
+                    const container = L.DomUtil.create('div', 'leaflet-control leaflet-bar');
+    
+                    const tutorialButton = L.DomUtil.create('button', 'tutorial-button', container);
+                    tutorialButton.innerText = 'Pokaż Samouczek';
+                    tutorialButton.onclick = handleShowTutorial;
+    
+                    L.DomEvent.disableClickPropagation(container);
+                    L.DomEvent.disableScrollPropagation(container);
+    
+                    return container;
+                }
+            });
+            
+            new TutorialControl({ position: 'topright' }).addTo(map);
 
             setThisMap(map);
             map.zoomControl.setPosition('topright');
@@ -76,7 +94,7 @@ const MapView = () => {
             }
             setMapInitialized(true);
         }
-    }, [token]);
+    }, [token, handleShowTutorial]);
 
     //Checking if the tutorial has already been seen 
     useEffect(() => {
@@ -295,7 +313,6 @@ const MapView = () => {
                     </form>
                 </div>
             </div>}
-            <button onClick={handleShowTutorial}>Pokaż Samouczek</button>
             <PinEditModal
                 pinData={newPinData}
                 availablePins={pins}
