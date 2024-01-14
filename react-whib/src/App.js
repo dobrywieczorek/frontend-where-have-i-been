@@ -26,7 +26,7 @@ import PrivateRoutes from './components/PrivateRoutes';
 import { GoogleLogin } from '@react-oauth/google';
 
 import GoogleCallback from "./GoogleCallback";
-
+import FacebookCallback from "./FacebookCallback";
 
 const Root = () => {
   return (
@@ -57,6 +57,7 @@ const router = createBrowserRouter(
       <Route path='/settings' element={<EditUser/>}> </Route>
       <Route path='/friends' element={<FriendList />}/>
       <Route path="/auth/google" element={<GoogleCallback />}></Route>
+      <Route path="/auth/facebook" element={<FacebookCallback />}></Route>
     </Route>
   )
 )
