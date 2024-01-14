@@ -12,6 +12,7 @@ const PinEditModal = ({ pinData, isOpen, isFormFilled, setFilled, onClose, handl
 
     const close = () => {
         onClose();
+        clearCurrentPin();
         setFilled(false);
     }
 
