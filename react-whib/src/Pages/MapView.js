@@ -34,7 +34,7 @@ const MapView = () => {
         latitude: 0,
         longitude: 0,
         user_id: 0,
-        category: '',
+        category: 'widok',
     });
     const [oldPin, setOldPin] = useState({
         pin_name: '',
@@ -151,6 +151,7 @@ const MapView = () => {
     window.handleEdit = async (pinn) => {
         const pin = pins.find(p => p.id === pinn);
         if (pin) {
+            setFormOpen(false);
             setOldPin(pin);
             setModalOpen(true);
         }
