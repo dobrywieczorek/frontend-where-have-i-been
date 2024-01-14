@@ -29,6 +29,12 @@ const MapView = () => {
 
     //Checking if the tutorial has already been seen 
     useEffect(() => {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+            //console.log("Brak access_token. Samouczek nie wyswietla sie.");
+            return;
+        }
+        //console.log("Wyswietlenie samouczka");
         const tutorialShown = document.cookie.split(';').some((item) => item.trim().startsWith('tutorialShown='));
         if (!tutorialShown) {
             setIsTutorialVisible(true);
