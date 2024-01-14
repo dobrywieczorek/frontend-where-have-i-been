@@ -25,17 +25,27 @@ const MapView = () => {
             thisMap.flyTo([pin.latitude, pin.longitude], 15);
         }
     };
-    const [editingPin, setEditingPin] = useState(null);
     const [isModalOpen, setModalOpen] = useState(false);
     const [newPinData, setNewPinData] = useState({
-            pin_name: '',
-            description: '',
-            favourite: false,
-            latitude: 0,
-            longitude: 0,
-            user_id: 0,
-            category: '',
-        });
+        pin_name: '',
+        description: '',
+        favourite: false,
+        latitude: 0,
+        longitude: 0,
+        user_id: 0,
+        category: '',
+    });
+    const [oldPin, setOldPin] = useState({
+        pin_name: '',
+        description: '',
+        favourite: false,
+        latitude: 0,
+        longitude: 0,
+        user_id: 0,
+        category: '',
+    });
+    const [isFilled, setIsFilled] = useState(false);
+    
     useEffect(() => {
         if (!mapInitialized) {
             const map = L.map('mapContainer').setView([51.505, -0.09], 13);
@@ -51,7 +61,11 @@ const MapView = () => {
             if (token) {
                 map.on('click', (e) => {
                     const { lat, lng } = e.latlng;
-                    setNewPinData({ ...newPinData, latitude: lat, longitude: lng });
+                    setNewPinData(prevData => ({
+                        ...prevData,
+                        latitude: lat,
+                        longitude: lng
+                    }));
                 });
             }
             setMapInitialized(true);
@@ -72,7 +86,6 @@ const MapView = () => {
             }
 
             const data = await res.json();
-            console.log("PINEZKI PROSTO Z BAZY DANYCH! ", data.map_pins);
             setPins(data.map_pins);
             renderPins(data.map_pins, startedMap);
         } catch (error) {
@@ -135,9 +148,13 @@ const MapView = () => {
         setNewPinData({ pin_name: '', description: '', category: '', latitude: 0, longitude: 0, favourite: false });
     };
     
-    window.handleEdit = async (id) => {
-        setPinId(id)
-        setModalOpen(true);
+    window.handleEdit = async (pinn) => {
+        const pin = pins.find(p => p.id === pinn);
+        if (pin) {
+            setPinId(pin.id);
+            setOldPin(pin);
+            setModalOpen(true);
+        }
     };
 
     const addMarker = (pin, map) => {
@@ -158,10 +175,8 @@ const MapView = () => {
                 Opis: ${pin.description}<br>
                 Kategoria: ${pin.category}<br>
                 Ulubiony: ${favourite}<br>
-                <button onclick="window.handleEdit(${pin.id})">Edytuj pinezkę</button>
+                <button onclick="window.handleEdit(${pin.id})">Edytuj pinezkę</button><br>
                 <button onclick="window.deletePin(${pin.id})">Usuń pinezkę</button>`);
-
-        
         markersRef.current[pin.id] = marker;
     };
 
@@ -216,54 +231,63 @@ const MapView = () => {
 
     return (
         <div>
-            <div id="mapContainer" style={{ height: '600px', width: '100%' }}></div>
+            <div id="mapContainer" className="w-full h-full"></div>
             {thisMap && <MapSearchControl map={thisMap} pins={pins} onPinSelect={handlePinSelect} />}
-            {newPinData.latitude !== 0 && <div className="pin-form">
-                <h1>Dodawanie pinezki</h1>
-                <form onSubmit={handleAddSubmit}>
-                    <input type="text" name="pin_name" value={newPinData.pin_name} onChange={handleChange} placeholder="Nazwa" />
-                    <textarea name="description" value={newPinData.description} onChange={handleChange} placeholder="Opis"></textarea>
-                    <p>Kategoria</p>
-                    <select name="category" value={newPinData.category} onChange={handleChange}>
-                    <option value="widok">Widok</option>
-                    <option value="sklep">Sklep</option>
-                    <option value="zabawa">Zabawa</option>
-                    <option value="wakacje">Wakacje</option>
-                    <option value="inne">Inne</option>
-                    </select>
-                    <div className="favourite-checkbox">
-                        <label htmlFor="favourite">Ulubione</label>
-                        <input
-                            type="checkbox"
-                            id="favourite"
-                            name="favourite"
-                            checked={newPinData.favourite}
-                            onChange={handleChange}
-                        />
-                    </div>
+            {newPinData.latitude !== 0 && <div className="pin-form p-3 grid content-center">
+                <div className="flex flex-col items-center">
+                    <h1 className="text-xl font-bold mt-2 mb-2" >Dodawanie pinezki</h1>
+                    <form onSubmit={handleAddSubmit} className="sm:w-1/3 md:w-1/3 lg:w-1/4 xl:w-1/4 flex flex-col items-center">
+                        <input type="text" name="pin_name" className="w-3/4 my-2.5 p-2.5"
+                        value={newPinData.pin_name} onChange={handleChange} placeholder="Nazwa" />
+                        <textarea name="description" className="w-3/4 my-2.5 p-2.5"
+                        value={newPinData.description} onChange={handleChange} placeholder="Opis"></textarea>
+                        <p className="mt-2.5">Kategoria</p>
+                        <select name="category"  className="w-3/4 mb-2.5 mt-1 p-2.5 items-center" value={newPinData.category}
+                        onChange={handleChange}>
+                            <option value="widok">Widok</option>
+                            <option value="sklep">Sklep</option>
+                            <option value="zabawa">Zabawa</option>
+                            <option value="wakacje">Wakacje</option>
+                            <option value="inne">Inne</option>
+                        </select>
+                        <div className="my-2.5">
+                            <label htmlFor="favourite" className="mr-4">Ulubione</label>
+                            <input
+                                type="checkbox"
+                                id="favourite"
+                                name="favourite"
+                                checked={newPinData.favourite}
+                                onChange={handleChange}
+                            />
+                        </div>
 
-                    <div className="location-display">
-                        <label>Lokalizacja:</label>
-                        <span>{parseFloat(newPinData.latitude).toFixed(3)}, {parseFloat(newPinData.longitude).toFixed(3)}</span>
-                    </div>
+                        <div className="my-2.5">
+                            <label>Lokalizacja: </label>
+                            <span>{parseFloat(newPinData.latitude).toFixed(3)}, {parseFloat(newPinData.longitude).toFixed(3)}</span>
+                        </div>
 
-                    <button type="submit" className="submit-btn">Dodaj Pinezkę</button>
-                </form>
+                        <button type="submit"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5 rounded my-2.5 w-3/4">
+                            Dodaj Pinezkę
+                        </button>
+                    </form>
+                </div>
             </div>}
             <PinEditModal
                 pinData={newPinData}
                 availablePins={pins}
                 isOpen={isModalOpen}
-                pinToEdit={pinId}
+                isFormFilled={isFilled}
+                setFilled={(filling) => setIsFilled(filling)}
                 onClose={() => setModalOpen(false)}
                 handleEditChange={handleChange}
                 token={localStorage.getItem("access_token")}
                 updatePins={(updatedPin) => setPins(pins.map(pin => pin.id === updatedPin.id ? updatedPin : pin))}
                 clearCurrentPin={() => setNewPinData({ pin_name: '', description: '', category: '', latitude: 0, longitude: 0, favourite: false })}
-                markRef={markersRef}
                 map={thisMap}
                 createMarker={addMarker}
                 deleteMarker={removeMarker}
+                fillingForm={() => setNewPinData(oldPin)}
             />
         </div>
     );
