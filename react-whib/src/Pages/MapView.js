@@ -17,7 +17,6 @@ const MapView = () => {
     const [mapInitialized, setMapInitialized] = useState(false);
     const [pins, setPins] = useState([]);
     const [userId, setUserId] = useState(0);
-    const [pinId, setPinId] = useState(0);
     const token = localStorage.getItem("access_token");
     const markersRef = useRef({});
     const handlePinSelect = (pin) => {
@@ -26,6 +25,7 @@ const MapView = () => {
         }
     };
     const [isModalOpen, setModalOpen] = useState(false);
+    const [isFilled, setIsFilled] = useState(false);
     const [newPinData, setNewPinData] = useState({
         pin_name: '',
         description: '',
@@ -44,7 +44,6 @@ const MapView = () => {
         user_id: 0,
         category: '',
     });
-    const [isFilled, setIsFilled] = useState(false);
     
     useEffect(() => {
         if (!mapInitialized) {
@@ -131,8 +130,6 @@ const MapView = () => {
         getUserId();
     }, []);
 
-    
-
     useEffect(() => {
         setNewPinData({ ...newPinData, user_id: userId });
     }, [userId]);
@@ -152,7 +149,6 @@ const MapView = () => {
     window.handleEdit = async (pinn) => {
         const pin = pins.find(p => p.id === pinn);
         if (pin) {
-            setPinId(pin.id);
             setOldPin(pin);
             setModalOpen(true);
         }
