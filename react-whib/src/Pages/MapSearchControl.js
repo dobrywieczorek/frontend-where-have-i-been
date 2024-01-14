@@ -28,7 +28,7 @@ const MapSearchControl = ({ map, pins, onPinSelect }) => {
             }
         });
 
-        const searchControl = new SearchControl({ position: 'topleft' });
+        const searchControl = new SearchControl({ position: 'topright' });
         map.addControl(searchControl);
 
         return () => {

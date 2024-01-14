@@ -54,8 +54,8 @@ export default function UserSearchPanel() {
     };
 
     return (
-        <div className="container mx-auto mt-10">
-            <div className="max-w-4xl mx-auto bg-white rounded-lg overflow-hidden shadow-md">
+        <div className="container mx-auto">
+            <div className="max-w-4xl mx-auto bg-white rounded-lg overflow-hidden shadow-md mt-14">
                 {error && <p className="text-red-500">{error}</p>}
                 {isLoading ? (
                     <p>Loading friends...</p>

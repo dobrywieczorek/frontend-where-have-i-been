@@ -107,24 +107,7 @@
   section > h2{
     color:#6e44ff;
   }
-  .settings-icon{
-    height: 30px;
-    position: absolute;
-    top:10px;
-    right:25px;
-    z-index: 1000;
-    cursor: pointer;
-  }
-  .settings-dropdown:hover .settings-menu{
-    visibility: visible;
-  }
-  .settings-menu{
-    visibility: hidden;
-    position: absolute;
-    top:20px;
-    right:50px;
-  }
-
+  
   @media (min-width: 768px) {
 
     .profile-img{
