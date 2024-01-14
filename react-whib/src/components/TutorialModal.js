@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../css/TutorialModal.css';
+//import '../css/TutorialModal.css';
 import tutorialImage1 from '../img/home-128.png'
 
 
