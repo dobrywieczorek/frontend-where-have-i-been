@@ -20,6 +20,14 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.centered-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .close {
     color: #aaa;
     float: right;
@@ -34,16 +42,31 @@
     cursor: pointer;
 }
 
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
 button {
     background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
-    margin: 10px 0;
     border: none;
     cursor: pointer;
     border-radius: 5px;
 }
 
 button:hover {
+    background-color: #45a049;
+}
+
+.next-button {
+    background-color: #4CAF50;
+    margin-left: auto; 
+}
+
+.next-button:hover {
     background-color: #45a049;
 }

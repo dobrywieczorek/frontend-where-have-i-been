@@ -57,14 +57,17 @@ const TutorialModal = ({ isVisible, setIsVisible }) => {
         <div className="modal">
             <div className="modal-content">
                 <span className="close" onClick={() => setIsVisible(false) & setStep(0)}>&times;</span>
-                <p>{tutorialSteps[step].text}</p>
-                <div>
-                    {step > 0 && <button onClick={prevStep}>Poprzedni</button>}
-                    {step < tutorialSteps.length - 1 ? (
-                        <button onClick={nextStep}>Następny</button>
-                    ) : (
-                        <button onClick={() => setIsVisible(false) & setStep(0)}>Zakończ</button>
-                    )}
+                
+                <div className="centered-content">
+                    <p>{tutorialSteps[step].text}</p>
+                </div>
+                <div className="button-container">
+                        {step > 0 && <button onClick={prevStep}>Poprzedni</button>}
+                        {step < tutorialSteps.length - 1 ? (
+                            <button className="next-button" onClick={nextStep}>Następny</button>
+                        ) : (
+                            <button onClick={() => setIsVisible(false) & setStep(0)}>Zakończ</button>
+                        )}
                 </div>
             </div>
         </div>
