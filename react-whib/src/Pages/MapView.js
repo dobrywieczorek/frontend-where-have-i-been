@@ -147,7 +147,7 @@ const MapView = () => {
 
     const handleAddSubmit = (e) => {
         e.preventDefault();
-        if(!newPinData.pin_name || !newPinData.description) {
+        if (!newPinData.pin_name || !newPinData.description) {
             toast.error("Nie podano nazwy lub opisu!");
             return ;
         }

@@ -1,11 +1,16 @@
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const PinEditModal = ({ pinData, isOpen, isFormFilled, setFilled, onClose, handleEditChange, token, updatePins, clearCurrentPin, map, createMarker, deleteMarker, fillingForm }) => {
     const handleEditSubmit = (e) => {
         e.preventDefault();
-        if(!pinData.pin_name || !pinData.description) {
+        if (!pinData.pin_name || !pinData.description) {
             toast.error("Pole nazwy lub opisu jest puste!");
+            return ;
+        }
+        else if (pinData.latitude > 180 || pinData.latitude < -180 || pinData.longitude > 180 ||
+        pinData.longitude < -180) {
+            toast.error("Współrzędne przekraczają maksymalną lub minimalną wartość! Tylko od -180 do +180");
             return ;
         }
         editPin(pinData);
