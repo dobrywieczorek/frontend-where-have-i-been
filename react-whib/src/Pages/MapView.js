@@ -14,6 +14,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import iconUrl from '../../node_modules/leaflet/dist/images/marker-icon.png';
 import iconRetinaUrl from '../../node_modules/leaflet/dist/images/marker-icon-2x.png';
 import shadowUrl from '../../node_modules/leaflet/dist/images/marker-shadow.png';
+import { FacebookShareButton } from 'react-share';
+import { FacebookIcon } from 'react-share';
+import { TwitterShareButton } from 'react-share';
+import { TwitterIcon } from 'react-share';
+import { EmailShareButton } from 'react-share';
+import { EmailIcon } from 'react-share';
 
 const MapView = () => {
     const [thisMap, setThisMap] = useState(null);
@@ -278,6 +284,11 @@ const MapView = () => {
                         <div className="my-2.5">
                             <label>Lokalizacja: </label>
                             <span>{parseFloat(newPinData.latitude).toFixed(3)}, {parseFloat(newPinData.longitude).toFixed(3)}</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <FacebookShareButton url={"http://Where-have-i-been-ourproject.com"} hashtag='#Wherehaveibeen' quote={"Check out this pin:"}><FacebookIcon/></FacebookShareButton>
+                            <TwitterShareButton url={"http://Where-have-i-been-ourproject.com"} title={`Just adding new pin in: lat: ${newPinData.latitude} long: ${newPinData.longitude}`} hashtag="#Wherehaveibeen"><TwitterIcon/></TwitterShareButton>
+                            <EmailShareButton url={"http://Where-have-i-been-ourproject.com"} subject='My new pin in Where-have-i-been' body={`Just adding new pin in: lat: ${newPinData.latitude} long: ${newPinData.longitude}`}><EmailIcon/></EmailShareButton>
                         </div>
 
                         <button type="submit"
