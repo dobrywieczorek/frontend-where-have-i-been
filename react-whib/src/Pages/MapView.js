@@ -20,6 +20,7 @@ import { TwitterShareButton } from 'react-share';
 import { TwitterIcon } from 'react-share';
 import { EmailShareButton } from 'react-share';
 import { EmailIcon } from 'react-share';
+import { useTranslation } from 'react-i18next';
 
 const MapView = () => {
     const [thisMap, setThisMap] = useState(null);
@@ -27,6 +28,7 @@ const MapView = () => {
     const [pins, setPins] = useState([]);
     const [userId, setUserId] = useState(0);
     const token = localStorage.getItem("access_token");
+    const { t } = useTranslation();
     const markersRef = useRef({});
     const handlePinSelect = (pin) => {
         if (thisMap) {
@@ -154,7 +156,7 @@ const MapView = () => {
     const handleAddSubmit = (e) => {
         e.preventDefault();
         if (!newPinData.pin_name || !newPinData.description) {
-            toast.error("Nie podano nazwy lub opisu!");
+            toast.error(t('nonameordesc'));
             return ;
         }
         addPin();
@@ -184,12 +186,12 @@ const MapView = () => {
         let favourite = pin.favourite ? "tak" : "nie";
         const marker = L.marker([pin.latitude, pin.longitude], { icon: customIcon })
             .addTo(map)
-            .bindPopup(`<b>Nazwa: ${pin.pin_name}</b><br>
-                Opis: ${pin.description}<br>
-                Kategoria: ${pin.category}<br>
-                Ulubiony: ${favourite}<br>
-                <button onclick="window.handleEdit(${pin.id})">Edytuj pinezkę</button><br>
-                <button onclick="window.deletePin(${pin.id})">Usuń pinezkę</button>`);
+            .bindPopup(`<b>${t('pinname')}: ${pin.pin_name}</b><br>
+                ${t('description')} ${pin.description}<br>
+                ${t('category')} ${pin.category}<br>
+                ${t('favourite')} ${favourite}<br>
+                <button onclick="window.handleEdit(${pin.id})">${t('editpin')}</button><br>
+                <button onclick="window.deletePin(${pin.id})">${t('removepind')}</button>`);
         markersRef.current[pin.id] = marker;
     };
 
@@ -208,7 +210,7 @@ const MapView = () => {
 
             setPins(pins.filter(pin => pin.id !== pinId));
             removeMarker(pinId);
-            toast.success("Pinezka została usunięta!");
+            toast.success(t('removepinmsg'));
         } catch (error) {
             console.error('Error deleting pin', error);
         }
@@ -238,7 +240,7 @@ const MapView = () => {
             const pinToAdd = json.map_pin;
             setPins([...pins, pinToAdd]);
             addMarker(pinToAdd, thisMap);
-            toast.success("Pinezka została dodana!");
+            toast.success(t('addpinmsg'));
             setFormOpen(false);
         } catch (error) {
             console.error('Error adding pin', error);
@@ -253,25 +255,25 @@ const MapView = () => {
             {isFormOpen && <div className="w-full absolute bottom-0 z-[1000] pin-form p-3 grid content-center">
                 <div className="flex flex-col items-center">
                     <div className="my-1 w-1/5">
-                        <h3 className="text-xl font-bold mt-1.5 ml-3 float-left">Dodawanie pinezki</h3>
+                        <h3 className="text-xl font-bold mt-1.5 ml-3 float-left">{t('addpintitle')}</h3>
                         <span className="text-zinc-400 mr-3 float-right text-3xl font-bold hover:text-black hover:cursor-pointer" onClick={() => {setFormOpen(false)}}>&times;</span>
                     </div>
                     <form onSubmit={handleAddSubmit} className="sm:w-1/3 md:w-1/3 lg:w-1/4 xl:w-1/4 flex flex-col items-center">
                         <input type="text" name="pin_name" className="w-3/4 my-2.5 p-2.5"
-                        value={newPinData.pin_name} onChange={handleChange} placeholder="Nazwa" />
+                        value={newPinData.pin_name} onChange={handleChange} placeholder={t('pinname')} />
                         <textarea name="description" className="w-3/4 my-2.5 p-2.5"
-                        value={newPinData.description} onChange={handleChange} placeholder="Opis"></textarea>
-                        <p className="mt-2.5">Kategoria</p>
+                        value={newPinData.description} onChange={handleChange} placeholder={t('description')}></textarea>
+                        <p className="mt-2.5">{t('category')}</p>
                         <select name="category"  className="w-3/4 mb-2.5 mt-1 p-2.5 items-center" value={newPinData.category}
                         onChange={handleChange}>
-                            <option value="widok">Widok</option>
-                            <option value="sklep">Sklep</option>
-                            <option value="zabawa">Zabawa</option>
-                            <option value="wakacje">Wakacje</option>
-                            <option value="inne">Inne</option>
+                            <option value="widok">{t('view')}</option>
+                            <option value="sklep">{t('shop')}</option>
+                            <option value="zabawa">{t('fun')}</option>
+                            <option value="wakacje">{t('holidays')}</option>
+                            <option value="inne">{t('other')}</option>
                         </select>
                         <div className="my-2.5">
-                            <label htmlFor="favourite" className="mr-4">Ulubione</label>
+                            <label htmlFor="favourite" className="mr-4">{t('favourite')}</label>
                             <input
                                 type="checkbox"
                                 id="favourite"
@@ -282,7 +284,7 @@ const MapView = () => {
                         </div>
 
                         <div className="my-2.5">
-                            <label>Lokalizacja: </label>
+                            <label>{t('localization')} </label>
                             <span>{parseFloat(newPinData.latitude).toFixed(3)}, {parseFloat(newPinData.longitude).toFixed(3)}</span>
                         </div>
                         <div style={{ display: 'flex', gap: '10px' }}>
@@ -293,7 +295,7 @@ const MapView = () => {
 
                         <button type="submit"
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5 rounded my-2.5 w-3/4">
-                            Dodaj Pinezkę
+                            {t('addpin')}
                         </button>
                     </form>
                 </div>

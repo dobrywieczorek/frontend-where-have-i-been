@@ -8,6 +8,7 @@ import magnifyingGlassIcon from '../img/magnifying_glass.svg'
 import cogIcon from '../img/cog.svg'
 import friendsIcon from '../img/friends.svg'
 import { UserContext } from '../contexts/AuthContext';
+import LanguageSwitcher from './LanguageSwitchComp';
 
 function Sidebar(){
     const {token, setToken} = useContext(UserContext)
@@ -41,6 +42,7 @@ function Sidebar(){
             <div id='sidebar-menu' className={isActive ? 'menu-open' : null}>
                 
                 <NavLink className='navlink' title='Map' to="/map"><img src={mapIcon} /></NavLink>
+                <LanguageSwitcher/>
                 {token != null ? 
                 <>
                 <NavLink className='navlink' title="Search Users" to="/usersearch"><img src={magnifyingGlassIcon}/></NavLink>
