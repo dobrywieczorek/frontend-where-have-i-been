@@ -1,6 +1,18 @@
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const PinEditModal = ({ pinData, isOpen, isFormFilled, setFilled, onClose, handleEditChange, token, updatePins, clearCurrentPin, map, createMarker, deleteMarker, fillingForm }) => {
     const handleEditSubmit = (e) => {
         e.preventDefault();
+        if (!pinData.pin_name || !pinData.description) {
+            toast.error("Pole nazwy lub opisu jest puste!");
+            return ;
+        }
+        else if (pinData.latitude > 180 || pinData.latitude < -180 || pinData.longitude > 180 ||
+        pinData.longitude < -180) {
+            toast.error("Współrzędne przekraczają maksymalną lub minimalną wartość! Tylko od -180 do +180");
+            return ;
+        }
         editPin(pinData);
         clearCurrentPin();
     };
@@ -12,6 +24,7 @@ const PinEditModal = ({ pinData, isOpen, isFormFilled, setFilled, onClose, handl
 
     const close = () => {
         onClose();
+        clearCurrentPin();
         setFilled(false);
     }
 
@@ -37,11 +50,12 @@ const PinEditModal = ({ pinData, isOpen, isFormFilled, setFilled, onClose, handl
             createMarker(updatedPin, map);
             updatePins(updatedPin.map_pin);
             
-            isOpen = false;
+            onClose();
             setFilled(false);
         } catch (error) {
             console.error('Error editing pin', error);
         }
+        toast.success("Pinezka została edytowana!");
     }
 
     if (!isOpen) return null;
@@ -49,8 +63,8 @@ const PinEditModal = ({ pinData, isOpen, isFormFilled, setFilled, onClose, handl
     return (
         <div className="fixed z-[1000] left-0 top-0 h-full w-full bg-black/[.50] grid content-center">
             <div className="modal-content py-3 px-6 pin-form mx-auto w-1/5 rounded-md flex flex-col items-center">
-                <div>
-                    <h3 className="text-xl font-bold mt-2 mb-2" style={{float: "left"}}>Edytowanie pinezki</h3>
+                <div className="w-full">
+                    <h3 className="text-xl font-bold mt-2 mb-2 float-left">Edytowanie pinezki</h3>
                     <span className="text-zinc-400 float-right text-3xl font-bold mt-0.5 hover:text-black hover:cursor-pointer" onClick={close} style={{float: "right"}}>&times;</span>
                 </div>
                 
