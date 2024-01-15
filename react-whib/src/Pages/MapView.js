@@ -9,16 +9,24 @@ import TutorialModal from '../components/TutorialModal';
 
 import PinEditModal from '../components/PinEditModal';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import iconUrl from '../../node_modules/leaflet/dist/images/marker-icon.png';
 import iconRetinaUrl from '../../node_modules/leaflet/dist/images/marker-icon-2x.png';
 import shadowUrl from '../../node_modules/leaflet/dist/images/marker-shadow.png';
+import { FacebookShareButton } from 'react-share';
+import { FacebookIcon } from 'react-share';
+import { TwitterShareButton } from 'react-share';
+import { TwitterIcon } from 'react-share';
+import { EmailShareButton } from 'react-share';
+import { EmailIcon } from 'react-share';
 
 const MapView = () => {
     const [thisMap, setThisMap] = useState(null);
     const [mapInitialized, setMapInitialized] = useState(false);
     const [pins, setPins] = useState([]);
     const [userId, setUserId] = useState(0);
-    const [pinId, setPinId] = useState(0);
     const token = localStorage.getItem("access_token");
     const markersRef = useRef({});
     const handlePinSelect = (pin) => {
@@ -31,6 +39,8 @@ const MapView = () => {
         setIsTutorialVisible(true);
     };
     const [isModalOpen, setModalOpen] = useState(false);
+    const [isFilled, setIsFilled] = useState(false);
+    const [isFormOpen, setFormOpen] = useState(false);
     const [newPinData, setNewPinData] = useState({
         pin_name: '',
         description: '',
@@ -38,7 +48,7 @@ const MapView = () => {
         latitude: 0,
         longitude: 0,
         user_id: 0,
-        category: '',
+        category: 'widok',
     });
     const [oldPin, setOldPin] = useState({
         pin_name: '',
@@ -49,9 +59,9 @@ const MapView = () => {
         user_id: 0,
         category: '',
     });
-    const [isFilled, setIsFilled] = useState(false);
     const tutorialButton = document.createElement('button');
 
+    
     useEffect(() => {
         if (!mapInitialized) {
             const map = L.map('mapContainer').setView([51.505, -0.09], 13);
@@ -90,6 +100,7 @@ const MapView = () => {
                         latitude: lat,
                         longitude: lng
                     }));
+                    setFormOpen(true);
                 });
             }
             setMapInitialized(true);
@@ -169,8 +180,6 @@ const MapView = () => {
         getUserId();
     }, []);
 
-    
-
     useEffect(() => {
         setNewPinData({ ...newPinData, user_id: userId });
     }, [userId]);
@@ -183,6 +192,10 @@ const MapView = () => {
 
     const handleAddSubmit = (e) => {
         e.preventDefault();
+        if (!newPinData.pin_name || !newPinData.description) {
+            toast.error("Nie podano nazwy lub opisu!");
+            return ;
+        }
         addPin();
         setNewPinData({ pin_name: '', description: '', category: '', latitude: 0, longitude: 0, favourite: false });
     };
@@ -190,7 +203,7 @@ const MapView = () => {
     window.handleEdit = async (pinn) => {
         const pin = pins.find(p => p.id === pinn);
         if (pin) {
-            setPinId(pin.id);
+            setFormOpen(false);
             setOldPin(pin);
             setModalOpen(true);
         }
@@ -234,6 +247,7 @@ const MapView = () => {
 
             setPins(pins.filter(pin => pin.id !== pinId));
             removeMarker(pinId);
+            toast.success("Pinezka została usunięta!");
         } catch (error) {
             console.error('Error deleting pin', error);
         }
@@ -263,19 +277,25 @@ const MapView = () => {
             const pinToAdd = json.map_pin;
             setPins([...pins, pinToAdd]);
             addMarker(pinToAdd, thisMap);
+            toast.success("Pinezka została dodana!");
+            setFormOpen(false);
         } catch (error) {
             console.error('Error adding pin', error);
         }
     };
 
     return (
-        <div>
+        <div className="relative">
+            <ToastContainer position="bottom-right" closeOnClick hideProgressBar theme="colored" />
             <div id="mapContainer" className="w-full h-full"></div>
             <TutorialModal isVisible={isTutorialVisible} setIsVisible={setIsTutorialVisible} />
             {thisMap && <MapSearchControl map={thisMap} pins={pins} onPinSelect={handlePinSelect} />}
-            {newPinData.latitude !== 0 && <div className="pin-form p-3 grid content-center">
+            {isFormOpen && <div className="w-full absolute bottom-0 z-[1000] pin-form p-3 grid content-center">
                 <div className="flex flex-col items-center">
-                    <h1 className="text-xl font-bold mt-2 mb-2" >Dodawanie pinezki</h1>
+                    <div className="my-1 w-1/5">
+                        <h3 className="text-xl font-bold mt-1.5 ml-3 float-left">Dodawanie pinezki</h3>
+                        <span className="text-zinc-400 mr-3 float-right text-3xl font-bold hover:text-black hover:cursor-pointer" onClick={() => {setFormOpen(false)}}>&times;</span>
+                    </div>
                     <form onSubmit={handleAddSubmit} className="sm:w-1/3 md:w-1/3 lg:w-1/4 xl:w-1/4 flex flex-col items-center">
                         <input type="text" name="pin_name" className="w-3/4 my-2.5 p-2.5"
                         value={newPinData.pin_name} onChange={handleChange} placeholder="Nazwa" />
@@ -304,6 +324,11 @@ const MapView = () => {
                         <div className="my-2.5">
                             <label>Lokalizacja: </label>
                             <span>{parseFloat(newPinData.latitude).toFixed(3)}, {parseFloat(newPinData.longitude).toFixed(3)}</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <FacebookShareButton url={"http://Where-have-i-been-ourproject.com"} hashtag='#Wherehaveibeen' quote={"Check out this pin:"}><FacebookIcon/></FacebookShareButton>
+                            <TwitterShareButton url={"http://Where-have-i-been-ourproject.com"} title={`Just adding new pin in: lat: ${newPinData.latitude} long: ${newPinData.longitude}`} hashtag="#Wherehaveibeen"><TwitterIcon/></TwitterShareButton>
+                            <EmailShareButton url={"http://Where-have-i-been-ourproject.com"} subject='My new pin in Where-have-i-been' body={`Just adding new pin in: lat: ${newPinData.latitude} long: ${newPinData.longitude}`}><EmailIcon/></EmailShareButton>
                         </div>
 
                         <button type="submit"
