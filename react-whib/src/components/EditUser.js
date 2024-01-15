@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function validatePasswordStrength(password) {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -7,6 +8,7 @@ function validatePasswordStrength(password) {
 }
 
 function EditUserPage() {
+    const { t } = useTranslation();
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [description, setDescription] = useState('');
@@ -86,7 +88,7 @@ function EditUserPage() {
     const handleUpdateUsername = async () => {
 
         if (name.trim() === '' || name.includes('#')) {
-            setNameError('Nazwa nie może być pusta i zawierać symbol "#"');
+            setNameError(t('updateusernameerror'));
             return;
         }
         setNameError('');
@@ -110,7 +112,7 @@ function EditUserPage() {
     const handleUpdatePassword = async () => {
 
         if (!validatePasswordStrength(password)) {
-            setPasswordError('Hasło powinno zawierać co najmniej 8 znaków, w tym wielkie i małe litery, cyfry i znaki specjalne');
+            setPasswordError(t('passwordregexinfo'));
             return;
         }
         setPasswordError('');
@@ -151,10 +153,10 @@ function EditUserPage() {
     return (
         <div className="flex justify-center items-center h-screen">
             <div className="max-w-md w-full px-6 py-10 bg-white shadow-lg rounded-lg">
-                <h1 className="text-3xl mb-8 font-semibold text-gray-800 text-center">Ustawienia użytkownika</h1>
+                <h1 className="text-3xl mb-8 font-semibold text-gray-800 text-center">{t('usersettings')}</h1>
                 <div className="mb-6">
                         <label className="block text-gray-700 text-lg font-semibold mb-3" htmlFor="name">
-                            Nowa nazwa konta:
+                            {t('newaccountname')}
                             <input
                                 className="border rounded-lg font-normal px-4 py-3 mt-2 w-full focus:outline-none focus:border-blue-500"
                                 type="text"
@@ -171,12 +173,12 @@ function EditUserPage() {
                             onClick={handleUpdateUsername}
                             className="bg-green-500 text-white py-3 px-6 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600"
                         >
-                            Aktualizuj nazwę konta
+                            {t('updatenameaccount')}
                         </button>
                     </div>
                     <div className="mb-6">
                         <label className="block text-gray-700 text-lg font-semibold mb-3" htmlFor="password">
-                            Nowe hasło:
+                            {t('newpassword')}
                             <input
                                 className="border rounded-lg font-normal px-4 py-3 mt-2 w-full focus:outline-none focus:border-blue-500"
                                 type="password"
@@ -193,12 +195,12 @@ function EditUserPage() {
                             onClick={handleUpdatePassword}
                             className="bg-green-500 text-white py-3 px-6 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600"
                         >
-                            Aktualizuj hasło
+                            {t('updatenewpassword')}
                         </button>
                     </div>
                     <div className="mb-6">
                         <label className="block text-gray-700 text-lg font-semibold mb-3" htmlFor="description">
-                            Opis:
+                            {t('description')}
                             <textarea
                                 className="border rounded-lg font-normal px-4 py-3 mt-2 w-full h-28 resize-none focus:outline-none focus:border-blue-500"
                                 id="description"
@@ -211,7 +213,7 @@ function EditUserPage() {
                             onClick={handleUpdateDescription}
                             className="bg-green-500 text-white py-3 px-6 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600"
                         >
-                            Aktualizuj opis
+                            {t('updatedescription')}
                         </button>
                     </div>
             </div>

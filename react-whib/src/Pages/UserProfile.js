@@ -9,6 +9,7 @@ import MapSearchControl from './MapSearchControl';
 import iconUrl from '../../node_modules/leaflet/dist/images/marker-icon.png';
 import iconRetinaUrl from '../../node_modules/leaflet/dist/images/marker-icon-2x.png';
 import shadowUrl from '../../node_modules/leaflet/dist/images/marker-shadow.png';
+import { useTranslation } from 'react-i18next';
 
 
 function UserProfile(){
@@ -18,7 +19,7 @@ function UserProfile(){
     const [isFriend, setisFriend] = useState(null);
     const [loading, setLoading] = useState(true);
     const [userStats, setUserStats] = useState();
-
+    const { t } = useTranslation();
     const url = 'http://localhost:8000/api'
 
     const { token } = useContext(UserContext)
@@ -195,10 +196,10 @@ const handlePinSelect = (pin) => {
         let favourite = pin.favourite ? "tak" : "nie";
         const marker = L.marker([pin.latitude, pin.longitude], { icon: customIcon })
             .addTo(map)
-            .bindPopup(`<b>Nazwa: ${pin.pin_name}</b><br>
-                Opis: ${pin.description}<br>
-                Kategoria: ${pin.category}<br>
-                Ulubiony: ${favourite}<br>
+            .bindPopup(`<b>${t('pinname')} ${pin.pin_name}</b><br>
+                ${t('description')} ${pin.description}<br>
+                ${t('category')} ${pin.category}<br>
+                ${t('favourite')} ${favourite}<br>
                 `);
 
         markersRef.current[pin.id] = marker;
@@ -226,21 +227,21 @@ const handlePinSelect = (pin) => {
                     <div className="nameHolder">
                         <h1 className="profile-name text-3xl font-bold">{userData.name}</h1>
                         { (!idMatched && !isFriend ) &&
-                        <button id='addFriend-btn' className="btn" role="button" onClick={addFriend}><span className="text">Add Friend</span></button>
+                        <button id='addFriend-btn' className="btn" role="button" onClick={addFriend}><span className="text">{t('addfriend')}</span></button>
                         }
                         { (!idMatched && isFriend) &&
-                        <button id='deleteFriend-btn' className='btn' role='button' onClick={deleteFriend}><span className="text">Remove Friend</span></button>
+                        <button id='deleteFriend-btn' className='btn' role='button' onClick={deleteFriend}><span className="text">{t('removefriend')}</span></button>
                         }
                     </div>
-                    <span className="profile-date">Joined: {new Date(userData.created_at).toLocaleDateString()}</span>
+                    <span className="profile-date">{t('joined')} {new Date(userData.created_at).toLocaleDateString()}</span>
                     <p className="profile-description">{userData.description}</p>
 
                     { userStats ? 
                     <div className='userStats'>
-                        <div><span>Pins: </span>{userStats.numberOfPins}</div>
-                        <div><span>Friends: </span>{userStats.numberOfFriends}</div>
-                        <div><span>Observers: </span>{userStats.numberOfObservers}</div>
-                        <div><span>Most used Category: </span>  {userStats.mostUsedPinCategory && userStats.mostUsedPinCategory.category ? userStats.mostUsedPinCategory.category : ''}</div>
+                        <div><span>{t('pins')} </span>{userStats.numberOfPins}</div>
+                        <div><span>{t('friends')} </span>{userStats.numberOfFriends}</div>
+                        <div><span>{t('observers')} </span>{userStats.numberOfObservers}</div>
+                        <div><span>{t('mostusedcategory')} </span>  {userStats.mostUsedPinCategory && userStats.mostUsedPinCategory.category ? userStats.mostUsedPinCategory.category : ''}</div>
                     </div> : null}
                     
                     <div>
@@ -251,7 +252,7 @@ const handlePinSelect = (pin) => {
 
                 </div>
             </div>
-            : <div>User not found!</div>
+            : <div>{t('usernotfound')}</div>
         : <div>Loading</div>
     );
 }
