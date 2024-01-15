@@ -63,12 +63,20 @@ const MapView = () => {
     });
     const tutorialButton = document.createElement('button');
 
-    
     useEffect(() => {
         if (!mapInitialized) {
-            const map = L.map('mapContainer').setView([51.505, -0.09], 13);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            const bounds = L.latLngBounds(
+                L.latLng(-89.98155760646617, -180), // southWest
+                L.latLng(89.99346179538875, 180)     // northEast
+            );
+
+            const map = L.map('mapContainer', {
+                minZoom: 2,
                 maxZoom: 19,
+                maxBounds: bounds,
+                maxBoundsViscosity: 1.0
+            }).setView([48.458, 13.843], 5.4);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors',
             }).addTo(map);
 
