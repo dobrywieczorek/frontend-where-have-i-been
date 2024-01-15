@@ -95,8 +95,10 @@ const PinEditModal = ({ pinData, isOpen, isFormFilled, setFilled, onClose, handl
                     </div>
 
                     <div className="my-2.5">
-                        <label>{t('localization')}</label><br/>
-                        <input type="text" name="latitude" className="w-full" value={pinData.latitude} onChange={handleEditChange} placeholder={t('latitude')} />
+                        <p className="mb-1">{t('localization')}</p><br/>
+                        <label>{t('latitude')} (y):</label>
+                        <input type="text" name="latitude" className="w-full mb-2" value={pinData.latitude} onChange={handleEditChange} placeholder={t('latitude')} />
+                        <label>{t('longitude')} (x):</label>
                         <input type="text" name="longitude" className="w-full" value={pinData.longitude} onChange={handleEditChange} placeholder={t('longitude')} />
                     </div>
 
