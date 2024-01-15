@@ -4,7 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import './styles.css';
 import './modalStyle.css';
 import '../css/SearchControl.css'
-import MapSearchControl from './MapSearchControl';
+import MapSearchControl from '../components/MapSearchControl';
+import TutorialModal from '../components/TutorialModal';
 
 import PinEditModal from '../components/PinEditModal';
 
@@ -35,6 +36,10 @@ const MapView = () => {
             thisMap.flyTo([pin.latitude, pin.longitude], 15);
         }
     };
+    const [isTutorialVisible, setIsTutorialVisible] = useState(false);
+    const handleShowTutorial = () => {
+        setIsTutorialVisible(true);
+    };
     const [isModalOpen, setModalOpen] = useState(false);
     const [isFilled, setIsFilled] = useState(false);
     const [isFormOpen, setFormOpen] = useState(false);
@@ -56,6 +61,8 @@ const MapView = () => {
         user_id: 0,
         category: '',
     });
+    const tutorialButton = document.createElement('button');
+
     
     useEffect(() => {
         if (!mapInitialized) {
@@ -64,6 +71,23 @@ const MapView = () => {
                 maxZoom: 19,
                 attribution: '© OpenStreetMap contributors',
             }).addTo(map);
+
+            const TutorialControl = L.Control.extend({
+                onAdd: function() {
+                    const container = L.DomUtil.create('div', 'leaflet-control leaflet-bar');
+    
+                    const tutorialButton = L.DomUtil.create('button', 'tutorial-button', container);
+                    tutorialButton.innerText = 'Pokaż Samouczek';
+                    tutorialButton.onclick = handleShowTutorial;
+    
+                    L.DomEvent.disableClickPropagation(container);
+                    L.DomEvent.disableScrollPropagation(container);
+    
+                    return container;
+                }
+            });
+            
+            new TutorialControl({ position: 'topright' }).addTo(map);
 
             setThisMap(map);
             map.zoomControl.setPosition('topright');
@@ -83,7 +107,22 @@ const MapView = () => {
             }
             setMapInitialized(true);
         }
-    }, [token]);
+    }, [token, handleShowTutorial]);
+
+    //Checking if the tutorial has already been seen 
+    useEffect(() => {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+            //console.log("Brak access_token. Samouczek nie wyswietla sie.");
+            return;
+        }
+        //console.log("Wyswietlenie samouczka");
+        const tutorialShown = document.cookie.split(';').some((item) => item.trim().startsWith('tutorialShown='));
+        if (!tutorialShown) {
+            setIsTutorialVisible(true);
+            document.cookie = "tutorialShown=true; path=/";
+        }
+    }, []);
 
     const fetchMapPins = async (startedMap) => {
         try {
@@ -251,6 +290,7 @@ const MapView = () => {
         <div className="relative">
             <ToastContainer position="bottom-right" closeOnClick hideProgressBar theme="colored" />
             <div id="mapContainer" className="w-full h-full"></div>
+            <TutorialModal isVisible={isTutorialVisible} setIsVisible={setIsTutorialVisible} />
             {thisMap && <MapSearchControl map={thisMap} pins={pins} onPinSelect={handlePinSelect} />}
             {isFormOpen && <div className="w-full absolute bottom-0 z-[1000] pin-form p-3 grid content-center">
                 <div className="flex flex-col items-center">

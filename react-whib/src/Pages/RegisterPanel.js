@@ -106,28 +106,17 @@ export default function RegisterPanel() {
                         <div className="mb-3 w-4/6 relative">
                             <label htmlFor="password" className="block text-gray-700">{t('password')}</label>
                             <input
-                                type={showPassword ? 'text' : 'password'}
+                                type={'password'}
                                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                                 id="password"
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
-                            />
-                            <button
-                                type="button"
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-                                onClick={() => setShowPassword(!showPassword)}
-                            >
-                                <img
-                                    src={showPassword ? hidePasswordImage : showPasswordImage}
-                                    alt={showPassword ? 'Ukryj hasło' : 'Pokaż hasło'}
-                                    style={{ width: '25px', height: '25px', marginTop: 23}}
-                                />
-                            </button>
+                            /> 
                         </div>
                         <div className="mb-3 w-4/6 ">
                             <label htmlFor="confirmPassword" className="block text-gray-700">{t('confirmpassword')}</label>
                             <input
-                                type={showPassword ? 'text' : 'password'}
+                                type={'password'}
                                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                                 id="confirmPassword"
                                 value={confirmPassword}

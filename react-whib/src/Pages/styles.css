@@ -6,3 +6,22 @@
 .pin-form input, .pin-form textarea {
     border: 1px solid #ddd;
 }
+
+.leaflet-control .tutorial-button {
+    background-color: #007bff; 
+    color: white;
+    border: none;
+    padding: 8px 12px; 
+    margin: 4px 0; 
+    text-align: center; 
+    text-decoration: none;
+    font-size: 16px; 
+    cursor: pointer;
+    border-radius: 4px; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: background-color 0.3s;
+}
+
+.leaflet-control .tutorial-button:hover {
+    background-color: #0056b3; 
+}
