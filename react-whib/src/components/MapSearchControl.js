@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import L from 'leaflet';
+import { useTranslation } from 'react-i18next';
 
 const MapSearchControl = ({ map, pins, onPinSelect }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredPins, setFilteredPins] = useState([]);
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (!map) return;
@@ -14,7 +16,7 @@ const MapSearchControl = ({ map, pins, onPinSelect }) => {
 
                 const input = L.DomUtil.create('input', 'search-input', container);
                 input.type = 'text';
-                input.placeholder = 'Search pin or category';
+                input.placeholder = t('searchImput');
                 input.oninput = function() {
                     setSearchTerm(input.value);
                 };
