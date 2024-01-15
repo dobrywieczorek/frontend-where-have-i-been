@@ -77,7 +77,7 @@ const MapView = () => {
                     const container = L.DomUtil.create('div', 'leaflet-control leaflet-bar');
     
                     const tutorialButton = L.DomUtil.create('button', 'tutorial-button', container);
-                    tutorialButton.innerText = 'Pokaż Samouczek';
+                    tutorialButton.innerText = t('tutorialButton');
                     tutorialButton.onclick = handleShowTutorial;
     
                     L.DomEvent.disableClickPropagation(container);

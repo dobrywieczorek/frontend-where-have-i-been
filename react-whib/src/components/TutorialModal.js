@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import L from 'leaflet';
 import tutorialImage1 from '../img/home-128.png'
+import { useTranslation } from 'react-i18next';
 
 
 const TutorialModal = ({ isVisible, setIsVisible }) => {
+    const { t } = useTranslation();
     const [step, setStep] = useState(0);
 
     if (!isVisible) {
@@ -12,31 +14,31 @@ const TutorialModal = ({ isVisible, setIsVisible }) => {
 
     const tutorialSteps = [
         {
-            text: "Witamy w samouczku mapy!",
+            text: t('tutorial1'),
             //image: tutorialImage1
         },
         {
-            text: "Porusznie się po mapie: Aby poruszać się po mapie przytrzymaj lewy przycisk myszy i przesuń mapę. Użyj przycisków + i - znajdujących się po górnej lewej stronie mapy aby przybliżyć i oddalić widok. Alternatywnie możesz użyć scroola na myszce.",
+            text: t('tutorial2'),
             //image: tutorialImage2
         },
         {
-            text: "Szukanie pinezek: Pod przyciskami do zmiany przybliżenia mapy znajduje się pole wyszukiania pinezek. Możesz wpisać do niego nazwę bądź kategorie pinezki aby je wyszukać. Kliknij w znalezioną pinezkę aby się do niej przenieść.",
+            text: t('tutorial3'),
             //image: tutorialImage3
         },
         {
-            text: "Dodanie pinezki: Aby dodać pinezkę należy kliknąć wybrane miejsce na mapie i następnie wypełnić formularz.",
+            text: t('tutorial4'),
             //image: tutorialImage4
         },
         {
-            text: "Edytowanie pinezki: Do edycji pinezki wystarczy tylko ją kliknąć, następnie wybrać edytuj i wypełnić formularz nowymi danymi.",
+            text: t('tutorial5'),
             //image: tutorialImage5
         },
         {
-            text: "Usunięcie pinezki: Kliknij pinezkę, a następnie 'Usuń', aby ją usunąć.",
+            text: t('tutorial6'),
             //image: tutorialImage6
         },
         {
-            text: "Zakończenie samouczka: Dziękujemy za korzystanie z naszej strony!",
+            text: t('tutorial7'),
             //image: tutorialImage7
         }
     ];
@@ -72,15 +74,15 @@ const TutorialModal = ({ isVisible, setIsVisible }) => {
                 <div className="flex justify-end items-center mt-5">
                     {step > 0 && 
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={prevStep}>
-                            Poprzedni
+                            {t('previous')}
                         </button>}
                     {step < tutorialSteps.length - 1 ? (
                         <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={nextStep}>
-                            Następny
+                            {t('next')}
                         </button>
                     ) : (
                         <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => setIsVisible(false) & setStep(0)}>
-                            Zakończ
+                            {t('end')}
                         </button>
                     )}
                 </div>
